@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { User } from '@prisma/client'
-import { Strategy, ExtractJwt } from 'passport-jwt'
+import { Request } from 'express'
+import { Strategy } from 'passport-jwt'
 
 import { Config } from '../config/config'
 
@@ -12,7 +13,7 @@ import { JwtDto } from './dto/jwt.dto'
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(readonly config: Config, readonly authService: AuthService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: jwtExtractor,
       secretOrKey: config.security.jwtSecret,
     })
   }
@@ -22,4 +23,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     return user
   }
+}
+
+function jwtExtractor(req?: Request): string | null {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const cookieToken: string | undefined = req?.cookies?.accessToken
+  const headerToken: string | undefined = req?.headers.authorization
+
+  if (cookieToken) {
+    return cookieToken
+  }
+
+  if (headerToken) {
+    return headerToken.split(' ')[0]
+  }
+
+  return null
 }

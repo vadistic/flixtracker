@@ -20,7 +20,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: config.security.googleClient,
       clientSecret: config.security.googleSecret,
-      callbackURL: config.nest.url + '/oauth/google/redirect',
+      callbackURL: config.nest.url + '/auth/google/redirect',
       scope: ['email', 'profile'],
     })
   }

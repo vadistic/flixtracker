@@ -8,37 +8,25 @@ import { Token } from './dto/token.model'
 
 @Resolver(() => Auth)
 export class AuthResolver {
-  constructor(private readonly auth: AuthService) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Mutation(returns => Auth)
   async signup(@Args('data') data: SignupInput): Promise<Token> {
-    data.email = data.email.toLowerCase()
-
-    const { accessToken, refreshToken } = await this.auth.signup(data)
-
-    return {
-      accessToken,
-      refreshToken,
-    }
+    return this.authService.signup(data)
   }
 
   @Mutation(returns => Auth)
   async login(@Args('data') { email, password }: LoginInput): Promise<Token> {
-    const { accessToken, refreshToken } = await this.auth.login(email.toLowerCase(), password)
-
-    return {
-      accessToken,
-      refreshToken,
-    }
+    return this.authService.login(email, password)
   }
 
   @Mutation(returns => Token)
   refreshToken(@Args('token') token: string) {
-    return this.auth.refreshToken(token)
+    return this.authService.refreshToken(token)
   }
 
   @ResolveField('user')
   async user(@Parent() auth: Auth) {
-    return await this.auth.getUserFromToken(auth.accessToken)
+    return await this.authService.getUserFromToken(auth.accessToken)
   }
 }

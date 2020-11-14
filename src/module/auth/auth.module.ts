@@ -6,12 +6,12 @@ import { authenticate } from 'passport'
 import { Config } from '../config/config'
 import { PrismaModule } from '../prisma/prisma.module'
 
+import { AuthController } from './auth.controller'
 import { GqlAuthGuard } from './auth.guard'
 import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
 import { GoogleStrategy } from './google.strategy'
 import { JwtStrategy } from './jwt.strategy'
-import { OAuthController } from './oauth.controller'
 import { PasswordService } from './password.service'
 
 @Module({
@@ -38,7 +38,7 @@ import { PasswordService } from './password.service'
     GqlAuthGuard,
     PasswordService,
   ],
-  controllers: [OAuthController],
+  controllers: [AuthController],
   exports: [GqlAuthGuard],
 })
 export class AuthModule implements NestModule {
@@ -50,6 +50,6 @@ export class AuthModule implements NestModule {
           scope: ['email', 'profile'],
         }),
       )
-      .forRoutes('/oauth/google')
+      .forRoutes('/auth/google')
   }
 }

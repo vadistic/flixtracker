@@ -19,6 +19,11 @@ export class CorsConfig {
   enabled: boolean = true
 }
 
+export class CookieConfig {
+  @IsBoolean()
+  enabled: boolean = true
+}
+
 export class DatabaseConfig {
   user: string = process.env.DB_USER ?? 'postgres'
   pasword: string = process.env.DB_PASSWORD ?? 'postgres'
@@ -50,6 +55,10 @@ export class GraphqlConfig {
 export class SecurityConfig {
   expiresIn: string = IS_DEV ? '1d' : '2m'
   refreshIn: string = '7d'
+
+  authorizedRedirect = '/'
+  unauthorizedRedirect = '/login'
+
   bcryptSaltOrRound: string | number = 10
 
   jwtSecret: string = process.env.JWT_SECRET ?? 'mySecret'
@@ -67,6 +76,9 @@ export class Config {
   @Type(() => CorsConfig)
   cors: CorsConfig
 
+  @Type(() => CorsConfig)
+  cookie: CookieConfig
+
   @Type(() => SwaggerConfig)
   swagger: SwaggerConfig
 
@@ -83,6 +95,7 @@ export class Config {
 export const configuration = (): Config => ({
   nest: new NestConfig(),
   cors: new CorsConfig(),
+  cookie: new CookieConfig(),
   swagger: new SwaggerConfig(),
   graphql: new GraphqlConfig(),
   security: new SecurityConfig(),

@@ -1,5 +1,6 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import cookieParser from 'cookie-parser'
 
 import { AppModule } from './app.module'
 import { Config } from './module/config/config'
@@ -18,6 +19,10 @@ async function bootstrap() {
   // cors
   if (config.cors.enabled) {
     app.enableCors()
+  }
+
+  if (config.cookie.enabled) {
+    app.use(cookieParser())
   }
 
   await app.listen(config.nest.port)
