@@ -44,12 +44,12 @@ export class AuthController {
         maxAge: ms(this.config.security.expiresIn),
       })
 
-      return res.redirect(this.config.security.authorizedRedirect)
+      return res.redirect('/')
     }
 
     return res.redirect(
       url.format({
-        pathname: this.config.security.unauthorizedRedirect,
+        pathname: '/login',
         query: {
           message: 'Google Authentication failed',
         },
@@ -98,7 +98,7 @@ export class AuthController {
 
     return res.redirect(
       url.format({
-        pathname: this.config.security.unauthorizedRedirect,
+        pathname: '/login',
         query: {
           message: 'Logged out',
         },

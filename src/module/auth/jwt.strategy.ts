@@ -13,19 +13,17 @@ import { JwtDto } from './dto/jwt.dto'
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(readonly config: Config, readonly authService: AuthService) {
     super({
-      jwtFromRequest: jwtExtractor,
+      jwtFromRequest: accessTokenExtractor,
       secretOrKey: config.security.jwtSecret,
     })
   }
 
   async validate(payload: JwtDto): Promise<User> {
-    const user = await this.authService.jwtAuth(payload)
-
-    return user
+    return this.authService.jwtAuth(payload)
   }
 }
 
-function jwtExtractor(req?: Request): string | null {
+function accessTokenExtractor(req?: Request): string | null {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   const cookieToken: string | undefined = req?.cookies?.accessToken
   const headerToken: string | undefined = req?.headers.authorization

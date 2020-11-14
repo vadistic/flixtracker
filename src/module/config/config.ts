@@ -56,9 +56,6 @@ export class SecurityConfig {
   expiresIn: string = IS_DEV ? '1d' : '2m'
   refreshIn: string = '7d'
 
-  authorizedRedirect = '/'
-  unauthorizedRedirect = '/login'
-
   bcryptSaltOrRound: string | number = 10
 
   jwtSecret: string = process.env.JWT_SECRET ?? 'mySecret'
