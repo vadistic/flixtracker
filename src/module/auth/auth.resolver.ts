@@ -2,8 +2,8 @@ import { Resolver, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql'
 
 import { Auth } from '../../models/auth.model'
 import { Token } from '../../models/token.model'
-import { AuthService } from '../../services/auth.service'
 
+import { AuthService } from './auth.service'
 import { LoginInput } from './dto/login.input'
 import { SignupInput } from './dto/signup.input'
 
@@ -14,7 +14,8 @@ export class AuthResolver {
   @Mutation(returns => Auth)
   async signup(@Args('data') data: SignupInput): Promise<Token> {
     data.email = data.email.toLowerCase()
-    const { accessToken, refreshToken } = await this.auth.createUser(data)
+
+    const { accessToken, refreshToken } = await this.auth.signup(data)
 
     return {
       accessToken,

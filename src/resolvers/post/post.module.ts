@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common'
 
-import { PrismaService } from '../../services/prisma.service'
+import { PrismaService } from '../../module/prisma/prisma.service'
 
 import { PostResolver } from './post.resolver'
 

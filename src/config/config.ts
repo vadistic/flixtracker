@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Type } from 'class-transformer'
-import { IsBoolean, IsOptional, IsPort } from 'class-validator'
+import { IsBoolean, IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
 
 import { toInt } from './config.utils'
 
 const IS_DEV = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
 export class NestConfig {
+  @IsUrl()
+  url: string = process.env.URL ?? `http://localhost:${process.env.PORT ?? 3000}`
+
   @IsPort()
   port: number = toInt(process.env.PORT) ?? 3000
 }
@@ -47,8 +51,14 @@ export class SecurityConfig {
   expiresIn: string = IS_DEV ? '1d' : '2m'
   refreshIn: string = '7d'
   bcryptSaltOrRound: string | number = 10
+
   jwtSecret: string = process.env.JWT_SECRET ?? 'mySecret'
+
+  googleClient: string = process.env.OAUTH_GOOGLE_CLIENT!
+  googleSecret: string = process.env.OAUTH_GOOGLE_SECRET!
 }
+
+// ────────────────────────────────────────────────────────────────────────────────
 
 export class Config {
   @Type(() => NestConfig)

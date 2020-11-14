@@ -7,7 +7,7 @@ import { UserIdArgs } from '../../models/args/user-id.args'
 import { PostOrder } from '../../models/inputs/post-order.input'
 import { PostConnection } from '../../models/pagination/post-connection.model'
 import { Post } from '../../models/post.model'
-import { PrismaService } from '../../services/prisma.service'
+import { PrismaService } from '../../module/prisma/prisma.service'
 
 @Resolver(() => Post)
 export class PostResolver {

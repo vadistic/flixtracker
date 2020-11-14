@@ -12,12 +12,18 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
+enum StrategyType {
+  LOCAL
+  GOOGLE
+}
+
 model User {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  email     String   @unique
-  password  String
+  id        String       @id @default(cuid())
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  email     String       @unique
+  auth      StrategyType
+  password  String?
   firstname String?
   lastname  String?
   posts     Post[]

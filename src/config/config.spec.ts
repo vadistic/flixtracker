@@ -22,7 +22,7 @@ describe('ConfigModule', () => {
   })
 
   it('works', () => {
-    console.log(config)
     expect(config).toBeDefined()
+    expect(typeof config.nest.port).toBe('number')
   })
 })

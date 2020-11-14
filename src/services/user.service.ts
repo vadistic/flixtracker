@@ -1,10 +1,9 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 
-import { ChangePasswordInput } from '../resolvers/user/dto/change-password.input'
+import { ChangePasswordInput } from '../module/auth/dto/change-password.input'
+import { PasswordService } from '../module/auth/password.service'
+import { PrismaService } from '../module/prisma/prisma.service'
 import { UpdateUserInput } from '../resolvers/user/dto/update-user.input'
-
-import { PasswordService } from './password.service'
-import { PrismaService } from './prisma.service'
 
 @Injectable()
 export class UserService {
