@@ -36,12 +36,12 @@ export class AuthController {
       const token = this.authService.generateToken({ userId: user.userId })
 
       res.cookie('refreshToken', token.refreshToken, {
-        maxAge: ms(this.config.security.refreshIn),
+        maxAge: ms(this.config.auth.refreshIn),
         path: '/auth/refresh',
       })
 
       res.cookie('accessToken', token.accessToken, {
-        maxAge: ms(this.config.security.expiresIn),
+        maxAge: ms(this.config.auth.expiresIn),
       })
 
       return res.redirect('/')

@@ -9,19 +9,17 @@ import { setupSwagger } from './swagger'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
 
-  // validation
   app.useGlobalPipes(new ValidationPipe())
 
   const config = app.get(Config)
 
   setupSwagger(config, app)
 
-  // cors
-  if (config.cors.enabled) {
+  if (config.nest.corsEnabled) {
     app.enableCors()
   }
 
-  if (config.cookie.enabled) {
+  if (config.nest.cookiesEnabled) {
     app.use(cookieParser())
   }
 

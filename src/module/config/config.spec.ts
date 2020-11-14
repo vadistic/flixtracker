@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { Config, configuration } from './config'
-import { ConfigModule } from './config.module'
+import { ConfigurationModule } from './config.module'
 
 describe('ConfigModule', () => {
   let config: Config
@@ -9,7 +9,7 @@ describe('ConfigModule', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot({
+        ConfigurationModule.forRoot({
           type: () => Config,
           load: configuration,
           isGlobal: true,

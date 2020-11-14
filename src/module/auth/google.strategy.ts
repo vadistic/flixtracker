@@ -18,8 +18,8 @@ export interface GoogleProfile {
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(readonly config: Config, readonly authService: AuthService) {
     super({
-      clientID: config.security.googleClient,
-      clientSecret: config.security.googleSecret,
+      clientID: config.auth.googleClient,
+      clientSecret: config.auth.googleSecret,
       callbackURL: config.nest.url + '/auth/google/redirect',
       scope: ['email', 'profile'],
     })

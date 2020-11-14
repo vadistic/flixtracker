@@ -8,7 +8,7 @@ export class PasswordService {
   constructor(private readonly config: Config) {}
 
   get bcryptSaltRounds(): string | number {
-    const saltOrRounds = this.config.security.bcryptSaltOrRound
+    const saltOrRounds = this.config.auth.bcryptSaltOrRound
 
     return Number.isInteger(Number(saltOrRounds)) ? Number(saltOrRounds) : saltOrRounds
   }

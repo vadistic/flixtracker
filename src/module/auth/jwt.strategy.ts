@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(readonly config: Config, readonly authService: AuthService) {
     super({
       jwtFromRequest: accessTokenExtractor,
-      secretOrKey: config.security.jwtSecret,
+      secretOrKey: config.auth.jwtSecret,
     })
   }
 

@@ -11,6 +11,14 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - '1080:1080'
+      - '1025:1025'
+    entrypoint: bin/maildev -w 1080 -s 1025
+
 volumes:
   postgres:
     name: nest-db

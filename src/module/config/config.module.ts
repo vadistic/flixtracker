@@ -1,9 +1,11 @@
-import { DynamicModule, InternalServerErrorException, Type } from '@nestjs/common'
+import { DynamicModule, InternalServerErrorException, Type, Module } from '@nestjs/common'
 import { plainToClass } from 'class-transformer'
 import { validateSync } from 'class-validator'
 import dotenv from 'dotenv'
 
-export interface ConfigModuleOptions {
+import { Config, configuration } from './config'
+
+export interface ConfigurationModuleOptions {
   type: () => Type<any>
   load: () => any
   envFile?: string
@@ -11,8 +13,8 @@ export interface ConfigModuleOptions {
   isGlobal?: boolean
 }
 
-export class ConfigModule {
-  static forRoot(options: ConfigModuleOptions): DynamicModule {
+export class ConfigurationModule {
+  static forRoot(options: ConfigurationModuleOptions): DynamicModule {
     if (options.enableEnvFile !== false) {
       dotenv.config({ path: options.envFile ?? '.env' })
     }
@@ -30,7 +32,7 @@ export class ConfigModule {
     if (err.length > 0) throw new InternalServerErrorException(err[0], 'invalid config')
 
     return {
-      module: ConfigModule,
+      module: ConfigurationModule,
       global: options.isGlobal ?? true,
       providers: [
         {
@@ -42,3 +44,16 @@ export class ConfigModule {
     }
   }
 }
+
+@Module({
+  imports: [
+    ConfigurationModule.forRoot({
+      isGlobal: true,
+      load: configuration,
+      type: () => Config,
+      envFile: '.env',
+      enableEnvFile: process.env.NODE_ENV !== 'production',
+    }),
+  ],
+})
+export class ConfigModule {}

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Type } from 'class-transformer'
-import { IsBoolean, IsOptional, IsPort, IsUrl } from 'class-validator'
+import { IsOptional, IsPort, IsUrl } from 'class-validator'
 
-import { toInt } from './config.utils'
+import { toBool, toInt } from './config.utils'
 
 const IS_DEV = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
@@ -12,16 +12,19 @@ export class NestConfig {
 
   @IsPort()
   port: number = toInt(process.env.PORT) ?? 3000
+
+  corsEnabled: boolean = true
+  cookiesEnabled: boolean = true
 }
 
-export class CorsConfig {
-  @IsBoolean()
-  enabled: boolean = true
-}
-
-export class CookieConfig {
-  @IsBoolean()
-  enabled: boolean = true
+export class SmtpConfig {
+  port: number = toInt(process.env.SMTP_PORT) ?? 1025
+  host: string = process.env.SMTP_HOST ?? 'localhost'
+  username: string = process.env.SMTP_USERNAME ?? 'localhost'
+  password: string = process.env.SMTP_PASSWORD ?? 'localhost'
+  tls: boolean = toBool(process.env.SMTP_TLS) ?? false
+  sender: string = process.env.SMTP_SENDER ?? 'NestJS App'
+  email: string = process.env.SMTP_EMAIL ?? 'mail@example.com'
 }
 
 export class DatabaseConfig {
@@ -52,7 +55,7 @@ export class GraphqlConfig {
   sortSchema: boolean = true
 }
 
-export class SecurityConfig {
+export class AuthConfig {
   expiresIn: string = IS_DEV ? '1d' : '2m'
   refreshIn: string = '7d'
 
@@ -70,11 +73,8 @@ export class Config {
   @Type(() => NestConfig)
   nest: NestConfig
 
-  @Type(() => CorsConfig)
-  cors: CorsConfig
-
-  @Type(() => CorsConfig)
-  cookie: CookieConfig
+  @Type(() => SmtpConfig)
+  smtp: SmtpConfig
 
   @Type(() => SwaggerConfig)
   swagger: SwaggerConfig
@@ -82,8 +82,8 @@ export class Config {
   @Type(() => GraphqlConfig)
   graphql: GraphqlConfig
 
-  @Type(() => SecurityConfig)
-  security: SecurityConfig
+  @Type(() => AuthConfig)
+  auth: AuthConfig
 
   @Type(() => DatabaseConfig)
   database: DatabaseConfig
@@ -91,10 +91,9 @@ export class Config {
 
 export const configuration = (): Config => ({
   nest: new NestConfig(),
-  cors: new CorsConfig(),
-  cookie: new CookieConfig(),
+  smtp: new SmtpConfig(),
   swagger: new SwaggerConfig(),
   graphql: new GraphqlConfig(),
-  security: new SecurityConfig(),
+  auth: new AuthConfig(),
   database: new DatabaseConfig(),
 })

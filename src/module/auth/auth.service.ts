@@ -144,11 +144,11 @@ export class AuthService {
 
   generateToken(payload: JwtDto): Token {
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: this.config.security.expiresIn,
+      expiresIn: this.config.auth.expiresIn,
     })
 
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: this.config.security.refreshIn,
+      expiresIn: this.config.auth.refreshIn,
     })
 
     return {

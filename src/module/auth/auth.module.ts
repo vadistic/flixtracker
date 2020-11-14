@@ -22,9 +22,9 @@ import { PasswordService } from './password.service'
       inject: [Config],
       useFactory: (config: Config) => {
         return {
-          secret: config.security.jwtSecret,
+          secret: config.auth.jwtSecret,
           signOptions: {
-            expiresIn: config.security.expiresIn,
+            expiresIn: config.auth.expiresIn,
           },
         }
       },
