@@ -2,10 +2,9 @@ import { Controller, Get, Req, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { Request } from 'express'
 
-import { Token } from '../../models/token.model'
-
 import { AuthService } from './auth.service'
 import { JwtDto } from './dto/jwt.dto'
+import { Token } from './dto/token.model'
 
 @Controller('/oauth')
 export class OAuthController {

@@ -1,9 +1,10 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
 
-import { ChangePasswordInput } from '../module/auth/dto/change-password.input'
-import { PasswordService } from '../module/auth/password.service'
-import { PrismaService } from '../module/prisma/prisma.service'
-import { UpdateUserInput } from '../resolvers/user/dto/update-user.input'
+import { UpdatePasswordInput } from '../../module/auth/dto/update-password.input'
+import { PasswordService } from '../../module/auth/password.service'
+import { PrismaService } from '../../module/prisma/prisma.service'
+
+import { UpdateUserInput } from './dto/update-user.input'
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,7 @@ export class UserService {
     })
   }
 
-  async changePassword(userId: string, userPassword: string, changePassword: ChangePasswordInput) {
+  async changePassword(userId: string, userPassword: string, changePassword: UpdatePasswordInput) {
     const passwordValid = await this.passwordService.validatePassword(
       changePassword.oldPassword,
       userPassword,

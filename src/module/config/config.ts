@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Type } from 'class-transformer'
-import { IsBoolean, IsOptional, IsPort, IsString, IsUrl } from 'class-validator'
+import { IsBoolean, IsOptional, IsPort, IsUrl } from 'class-validator'
 
 import { toInt } from './config.utils'
 

@@ -8,14 +8,14 @@ import {
 import { JwtService } from '@nestjs/jwt'
 import { User } from '@prisma/client'
 
-import { Config } from '../../config/config'
-import { Token } from '../../models/token.model'
+import { Config } from '../config/config'
 import { PrismaService } from '../prisma/prisma.service'
 
-import { ChangePasswordInput } from './dto/change-password.input'
 import { JwtDto } from './dto/jwt.dto'
-import { OAuthSignupInput } from './dto/oauth.dto'
+import { OAuthSignupInput } from './dto/oauth.input'
 import { SignupInput } from './dto/signup.input'
+import { Token } from './dto/token.model'
+import { UpdatePasswordInput } from './dto/update-password.input'
 import { PasswordService } from './password.service'
 
 @Injectable()
@@ -106,7 +106,7 @@ export class AuthService {
 
   // ────────────────────────────────────────────────────────────────────────────────
 
-  async updatePassword(userId: string, userPassword: string, data: ChangePasswordInput) {
+  async updatePassword(userId: string, userPassword: string, data: UpdatePasswordInput) {
     const passwordValid = await this.passwordService.validatePassword(
       data.oldPassword,
       userPassword,

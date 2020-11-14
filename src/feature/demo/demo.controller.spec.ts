@@ -1,21 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { Chance } from 'chance'
 
-import { AppService } from '../services/app.service'
+import { DemoController } from './demo.controller'
+import { DemoService } from './demo.service'
 
-import { AppController } from './app.controller'
 const chance = new Chance()
 
-describe('AppController', () => {
-  let appController: AppController
+describe('DemoController', () => {
+  let appController: DemoController
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
+      controllers: [DemoController],
+      providers: [DemoService],
     }).compile()
 
-    appController = app.get<AppController>(AppController)
+    appController = app.get<DemoController>(DemoController)
   })
 
   describe('root', () => {

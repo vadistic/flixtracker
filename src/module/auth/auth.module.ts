@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { authenticate } from 'passport'
 
-import { Config } from '../../config/config'
+import { Config } from '../config/config'
 import { PrismaModule } from '../prisma/prisma.module'
 
 import { GqlAuthGuard } from './auth.guard'

@@ -1,20 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { Chance } from 'chance'
 
-import { AppService } from '../services/app.service'
+import { DemoResolver } from './demo.resolver'
+import { DemoService } from './demo.service'
 
-import { AppResolver } from './app.resolver'
 const chance = new Chance()
 
-describe('AppResolver', () => {
-  let appResolver: AppResolver
+describe('DemoResolver', () => {
+  let appResolver: DemoResolver
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      providers: [AppResolver, AppService],
+      providers: [DemoResolver, DemoService],
     }).compile()
 
-    appResolver = app.get<AppResolver>(AppResolver)
+    appResolver = app.get<DemoResolver>(DemoResolver)
   })
 
   describe('helloWorld', () => {
@@ -22,6 +22,7 @@ describe('AppResolver', () => {
       expect(appResolver.helloWorld()).toBe('Hello World!')
     })
   })
+
   describe('hello', () => {
     it('should return "Hello ${name}!"', () => {
       const name = chance.name()

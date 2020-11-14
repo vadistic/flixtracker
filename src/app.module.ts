@@ -2,15 +2,13 @@ import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 
 import { DateScalar } from './common/scalars/date.scalar'
-import { Config, configuration } from './config/config'
-import { ConfigModule } from './config/config.module'
-import { AppController } from './controllers/app.controller'
+import { ConfigModule } from './module/config/config.module'
+import { DemoModule } from './feature/demo/demo.module'
+import { PostModule } from './feature/post/post.module'
+import { UserModule } from './feature/user/user.module'
 import { GraphqlOptions } from './graphql'
 import { AuthModule } from './module/auth/auth.module'
-import { AppResolver } from './resolvers/app.resolver'
-import { PostModule } from './resolvers/post/post.module'
-import { UserModule } from './resolvers/user/user.module'
-import { AppService } from './services/app.service'
+import { Config, configuration } from './module/config/config'
 
 @Module({
   imports: [
@@ -27,8 +25,9 @@ import { AppService } from './services/app.service'
     AuthModule,
     UserModule,
     PostModule,
+    DemoModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AppResolver, DateScalar],
+  controllers: [],
+  providers: [DateScalar],
 })
 export class AppModule {}

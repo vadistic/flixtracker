@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
-import { Config } from './config/config'
+import { Config } from './module/config/config'
 
 export function setupSwagger(config: Config, app: INestApplication) {
   if (config.swagger.enabled) {

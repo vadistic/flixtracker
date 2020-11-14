@@ -11,11 +11,6 @@ type Auth {
   user: User!
 }
 
-input ChangePasswordInput {
-  newPassword: String!
-  oldPassword: String!
-}
-
 """Date custom scalar type"""
 scalar Date
 
@@ -25,7 +20,7 @@ input LoginInput {
 }
 
 type Mutation {
-  changePassword(data: ChangePasswordInput!): User!
+  changePassword(data: UpdatePasswordInput!): User!
   login(data: LoginInput!): Auth!
   refreshToken(token: String!): Token!
   signup(data: SignupInput!): Auth!
@@ -62,12 +57,12 @@ type Post {
 }
 
 type PostConnection {
-  edges: [PostEdge!]
+  edges: [PostModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int!
 }
 
-type PostEdge {
+type PostModelEdge {
   cursor: String!
   node: Post!
 }
@@ -115,6 +110,11 @@ type Token {
 
   """JWT refresh token"""
   refreshToken: String!
+}
+
+input UpdatePasswordInput {
+  newPassword: String!
+  oldPassword: String!
 }
 
 input UpdateUserInput {

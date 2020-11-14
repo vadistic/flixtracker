@@ -2,14 +2,15 @@ import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection
 import { Resolver, Query, Parent, Args, ResolveField } from '@nestjs/graphql'
 
 import { PaginationArgs } from '../../common/pagination/pagination.args'
-import { PostIdArgs } from '../../models/args/post-id.args'
-import { UserIdArgs } from '../../models/args/user-id.args'
-import { PostOrder } from '../../models/inputs/post-order.input'
-import { PostConnection } from '../../models/pagination/post-connection.model'
-import { Post } from '../../models/post.model'
 import { PrismaService } from '../../module/prisma/prisma.service'
+import { UserIdArgs } from '../user/dto/user-id.args'
 
-@Resolver(() => Post)
+import { PostConnection } from './dto/post-connection.model'
+import { PostIdArgs } from './dto/post-id.args'
+import { PostOrder } from './dto/post-order.input'
+import { PostModel } from './dto/post.model'
+
+@Resolver(() => PostModel)
 export class PostResolver {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -48,20 +49,20 @@ export class PostResolver {
     )
   }
 
-  @Query(returns => [Post])
+  @Query(returns => [PostModel])
   async userPostCollection(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findOne({ where: { id: id.userId } })
       .posts({ where: { published: true } })
   }
 
-  @Query(returns => Post)
+  @Query(returns => PostModel)
   async post(@Args() id: PostIdArgs) {
     return this.prisma.post.findOne({ where: { id: id.postId } })
   }
 
   @ResolveField('author')
-  async author(@Parent() post: Post) {
+  async author(@Parent() post: PostModel) {
     return this.prisma.post.findOne({ where: { id: post.id } }).author()
   }
 }

@@ -1,7 +1,7 @@
 import { ObjectType, registerEnumType, HideField } from '@nestjs/graphql'
 
-import { BaseModel } from './base.model'
-import { Post } from './post.model'
+import { BaseModel } from '../../../common/base/base.model'
+import { PostModel } from '../../post/dto/post.model'
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -19,7 +19,7 @@ export class User extends BaseModel {
   firstname?: string
   lastname?: string
   role: Role
-  posts: Post[]
+  posts: PostModel[]
 
   @HideField()
   password: string

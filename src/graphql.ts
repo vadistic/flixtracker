@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql'
 import { Request } from 'express'
 
-import { Config } from './config/config'
+import { Config } from './module/config/config'
 
 export interface Context {
   req: Request

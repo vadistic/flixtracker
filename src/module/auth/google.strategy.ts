@@ -2,7 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy } from 'passport-google-oauth20'
 
-import { Config } from '../../config/config'
+import { Config } from '../config/config'
 
 import { AuthService } from './auth.service'
 
