@@ -1,20 +1,20 @@
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection'
 import { Resolver, Query, Parent, Args, ResolveField } from '@nestjs/graphql'
-import { PostConnection } from 'src/models/pagination/post-connection.model'
 
 import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { PostIdArgs } from '../../models/args/post-id.args'
 import { UserIdArgs } from '../../models/args/user-id.args'
 import { PostOrder } from '../../models/inputs/post-order.input'
+import { PostConnection } from '../../models/pagination/post-connection.model'
 import { Post } from '../../models/post.model'
 import { PrismaService } from '../../services/prisma.service'
 
-@Resolver(of => Post)
+@Resolver(() => Post)
 export class PostResolver {
   constructor(private readonly prisma: PrismaService) {}
 
   @Query(returns => PostConnection)
-  async publishedPosts(
+  async postConnection(
     @Args() { skip, after, before, first, last }: PaginationArgs,
     @Args({ name: 'query', type: () => String, nullable: true })
     query: string,
@@ -25,18 +25,19 @@ export class PostResolver {
     })
     orderBy: PostOrder,
   ) {
-    const a = await findManyCursorConnection(
-      args =>
+    return findManyCursorConnection(
+      async args =>
         this.prisma.post.findMany({
           include: { author: true },
           where: {
             published: true,
             title: { contains: query || '' },
           },
-          orderBy: orderBy ? { [orderBy.field]: orderBy.direction } : null,
+          orderBy: orderBy ? { [orderBy.field]: orderBy.direction } : undefined,
           ...args,
+          skip,
         }),
-      () =>
+      async () =>
         this.prisma.post.count({
           where: {
             published: true,
@@ -45,22 +46,13 @@ export class PostResolver {
         }),
       { first, last, before, after },
     )
-    return a
   }
 
   @Query(returns => [Post])
-  userPosts(@Args() id: UserIdArgs) {
+  async userPostCollection(@Args() id: UserIdArgs) {
     return this.prisma.user
       .findOne({ where: { id: id.userId } })
       .posts({ where: { published: true } })
-
-    // or
-    // return this.prisma.posts.findMany({
-    //   where: {
-    //     published: true,
-    //     author: { id: id.userId }
-    //   }
-    // });
   }
 
   @Query(returns => Post)

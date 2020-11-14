@@ -3,7 +3,7 @@ import { Field, ObjectType, Int } from '@nestjs/graphql'
 
 import { PageInfo } from './page-info.model'
 
-export default function Paginated<TItem>(TItemClass: Type<TItem>) {
+export function Paginated<TItem>(TItemClass: Type<TItem>) {
   @ObjectType(`${TItemClass.name}Edge`)
   abstract class EdgeType {
     @Field(type => String)
@@ -28,5 +28,6 @@ export default function Paginated<TItem>(TItemClass: Type<TItem>) {
     @Field(type => Int)
     totalCount: number
   }
+
   return PaginatedType
 }

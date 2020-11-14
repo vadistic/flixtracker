@@ -4,6 +4,16 @@ export interface Config {
   swagger: SwaggerConfig
   graphql: GraphqlConfig
   security: SecurityConfig
+  database: DatabaseConfig
+}
+
+export interface DatabaseConfig {
+  DB_USER: string
+  DB_PASSWORD: string
+  DB_NAME: string
+  DB_HOST: string
+  DB_PORT: number
+  DB_SCHEMA?: string
 }
 
 export interface NestConfig {
@@ -33,4 +43,5 @@ export interface SecurityConfig {
   expiresIn: string
   refreshIn: string
   bcryptSaltOrRound: string | number
+  jwtSecret: string
 }

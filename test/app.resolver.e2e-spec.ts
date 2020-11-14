@@ -1,7 +1,8 @@
+/* eslint-disable jest/expect-expect */
 import { INestApplication } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
 import { Chance } from 'chance'
-import * as request from 'supertest'
+import request from 'supertest'
 
 import { AppModule } from '../src/app.module'
 const chance = new Chance()
@@ -18,22 +19,20 @@ describe('AppResolver (e2e)', () => {
     await app.init()
   })
 
-  it('helloWorld (Query)', () => {
-    // TODO assert return value
+  it('helloWorld (Query)', async () => {
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: '{ helloWorld }',
+        query: /* graphql */ `{ helloWorld }`,
       })
       .expect(200)
   })
-  it('hello (Query)', () => {
-    // TODO assert return value
+  it('hello (Query)', async () => {
     const name = chance.name()
     return request(app.getHttpServer())
       .post('/graphql')
       .send({
-        query: `{ hello(name: "${name}") }`,
+        query: /* graphql */ `{ hello(name: "${name}") }`,
       })
       .expect(200)
   })

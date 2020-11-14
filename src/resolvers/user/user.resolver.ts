@@ -1,22 +1,22 @@
 import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Parent, Mutation, Args, ResolveField } from '@nestjs/graphql'
-import { UserService } from 'src/services/user.service'
 
 import { UserEntity } from '../../decorators/user.decorator'
 import { GqlAuthGuard } from '../../guards/gql-auth.guard'
 import { User } from '../../models/user.model'
 import { PrismaService } from '../../services/prisma.service'
+import { UserService } from '../../services/user.service'
 
 import { ChangePasswordInput } from './dto/change-password.input'
 import { UpdateUserInput } from './dto/update-user.input'
 
-@Resolver(of => User)
+@Resolver(() => User)
 @UseGuards(GqlAuthGuard)
 export class UserResolver {
   constructor(private readonly userService: UserService, private readonly prisma: PrismaService) {}
 
   @Query(returns => User)
-  async me(@UserEntity() user: User): Promise<User> {
+  me(@UserEntity() user: User): User {
     return user
   }
 
@@ -36,7 +36,7 @@ export class UserResolver {
   }
 
   @ResolveField('posts')
-  posts(@Parent() author: User) {
+  async posts(@Parent() author: User) {
     return this.prisma.user.findOne({ where: { id: author.id } }).posts()
   }
 }

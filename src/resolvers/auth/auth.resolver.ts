@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth.service'
 import { LoginInput } from './dto/login.input'
 import { SignupInput } from './dto/signup.input'
 
-@Resolver(of => Auth)
+@Resolver(() => Auth)
 export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
@@ -33,7 +33,7 @@ export class AuthResolver {
   }
 
   @Mutation(returns => Token)
-  async refreshToken(@Args('token') token: string) {
+  refreshToken(@Args('token') token: string) {
     return this.auth.refreshToken(token)
   }
 

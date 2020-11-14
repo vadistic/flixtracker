@@ -1,11 +1,11 @@
-import { PrismaClient } from '@prisma/client';
-import * as dotenv from 'dotenv';
+import { PrismaClient } from '@prisma/client'
+import * as dotenv from 'dotenv'
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient()
 
 async function main() {
-  dotenv.config();
-  console.log('Seeding...');
+  dotenv.config()
+  console.log('Seeding...')
 
   const user1 = await prisma.user.create({
     data: {
@@ -22,7 +22,7 @@ async function main() {
         },
       },
     },
-  });
+  })
   const user2 = await prisma.user.create({
     data: {
       email: 'bart@simpson.com',
@@ -45,13 +45,11 @@ async function main() {
         ],
       },
     },
-  });
+  })
 
-  console.log({ user1, user2 });
+  console.info(user1, user2)
+
+  await prisma.$disconnect()
 }
 
-main()
-  .catch((e) => console.error(e))
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch(e => console.error(e))

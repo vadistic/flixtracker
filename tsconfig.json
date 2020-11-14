@@ -7,11 +7,14 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "es2018",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
+    "incremental": true,
+    "strict": true,
+    "allowJs": false,
+    "strictPropertyInitialization": false
   },
   "exclude": ["node_modules", "dist", "graphql"]
 }

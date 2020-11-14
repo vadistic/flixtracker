@@ -5,11 +5,10 @@ import {
   ConflictException,
   UnauthorizedException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { User, PrismaClientKnownRequestError } from '@prisma/client'
 
-import { SecurityConfig } from '../configs/config.interface'
+import { Config } from '../config/config'
 import { Token } from '../models/token.model'
 import { JwtDto } from '../resolvers/auth/dto/jwt.dto'
 import { SignupInput } from '../resolvers/auth/dto/signup.input'
@@ -23,7 +22,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
-    private readonly configService: ConfigService,
+    private readonly config: Config,
   ) {}
 
   async createUser(payload: SignupInput): Promise<Token> {
@@ -66,11 +65,11 @@ export class AuthService {
     })
   }
 
-  async validateUser(userId: string): Promise<User> {
+  async validateUser(userId: string): Promise<User | null> {
     return this.prisma.user.findOne({ where: { id: userId } })
   }
 
-  async getUserFromToken(token: string): Promise<User> {
+  async getUserFromToken(token: string): Promise<User | null> {
     const jwt = this.jwtService.decode(token) as JwtDto
 
     if (!jwt?.userId) return null
@@ -79,14 +78,12 @@ export class AuthService {
   }
 
   generateToken(payload: JwtDto): Token {
-    const securityConfig = this.configService.get<SecurityConfig>('security')
-
     const accessToken = this.jwtService.sign(payload, {
-      expiresIn: securityConfig.refreshIn,
+      expiresIn: this.config.security.expiresIn,
     })
 
     const refreshToken = this.jwtService.sign(payload, {
-      expiresIn: securityConfig.refreshIn,
+      expiresIn: this.config.security.refreshIn,
     })
 
     return {
