@@ -18,19 +18,20 @@ enum StrategyType {
 }
 
 model User {
-  id         String       @id @default(cuid())
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  email      String       @unique
-  auth       StrategyType
-  status     UserStatus
-  emailToken String?
-  password   String?
-  firstname  String?
-  lastname   String?
-  posts      Post[]
-  role       UserRole
-
+  id           String       @id @default(cuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
+  auth         StrategyType
+  status       UserStatus
+  firstname    String?
+  lastname     String?
+  posts        Post[]
+  role         UserRole
+  // internal
+  emailCode    String?
+  passwordCode String?
+  password     String?
 }
 
 model Post {

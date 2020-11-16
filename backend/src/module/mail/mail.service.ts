@@ -1,8 +1,9 @@
 import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
+import { User } from '@prisma/client'
 
-import { MailProps, MailType } from './mail.interface'
-import { mailSubjectMap } from './templates/subjects'
+import { mailSubjectMap } from './mail-subjects'
+import { MailProps, MailType } from './mail.types'
 
 export interface SendMessageInfo {
   accepted: string[]
@@ -19,14 +20,29 @@ export interface SendMessageInfo {
 export class MailService {
   constructor(readonly mailer: MailerService) {}
 
-  async sendMail<T extends MailType>(template: T, props: MailProps<T>): Promise<SendMessageInfo> {
+  async sendMail<T extends MailType>(
+    template: T,
+    user: User,
+    props: MailProps<T>,
+  ): Promise<SendMessageInfo> {
+    const name = this.getName(user)
+    const templateProps = { ...props, name } as any
+
     const info = await this.mailer.sendMail({
-      to: { name: props.name, address: props.email },
-      subject: mailSubjectMap[template](props),
+      to: { name: name, address: user.email },
+      subject: mailSubjectMap[template](templateProps),
       template: template,
-      context: props,
+      context: templateProps,
     })
 
     return info as SendMessageInfo
+  }
+
+  getName({ firstname, lastname, email }: User) {
+    if (firstname) return firstname
+
+    if (lastname) return lastname
+
+    return email.replace(/@.*/, '')
   }
 }

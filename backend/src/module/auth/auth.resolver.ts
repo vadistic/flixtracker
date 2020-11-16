@@ -6,6 +6,7 @@ import { AuthService } from './auth.service'
 import { AuthModel } from './dto/auth.model'
 import { LoginInput } from './dto/login.input'
 import { SignupInput } from './dto/signup.input'
+import { VerifyEmailInput } from './dto/verify-email.input'
 
 @Resolver(() => AuthModel)
 export class AuthResolver {
@@ -19,6 +20,11 @@ export class AuthResolver {
   @Mutation(returns => AuthModel)
   async login(@Args('data') { email, password }: LoginInput): Promise<AuthModel> {
     return this.authService.login(email, password)
+  }
+
+  @Mutation(returns => String)
+  async confirmEmail(@Args('data') data: VerifyEmailInput) {
+    return this.authService.verifyEmailConfirm(data)
   }
 
   @Mutation(returns => String)

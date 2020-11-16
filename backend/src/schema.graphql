@@ -20,6 +20,7 @@ input LoginInput {
 }
 
 type Mutation {
+  confirmEmail(data: VerifyEmailInput!): String!
   login(data: LoginInput!): Auth!
   refreshToken(refreshToken: String!): String!
   signup(data: SignupInput!): Auth!
@@ -120,4 +121,9 @@ type User {
 enum UserRole {
   ADMIN
   USER
+}
+
+input VerifyEmailInput {
+  code: String!
+  email: String!
 }

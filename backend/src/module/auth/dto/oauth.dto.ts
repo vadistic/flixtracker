@@ -1,8 +1,6 @@
-import { Field, registerEnumType } from '@nestjs/graphql'
+import { Field } from '@nestjs/graphql'
 import { StrategyType } from '@prisma/client'
 import { IsEmail } from 'class-validator'
-
-registerEnumType(StrategyType, { name: 'StrategyType' })
 
 export class OAuthInput {
   @Field()

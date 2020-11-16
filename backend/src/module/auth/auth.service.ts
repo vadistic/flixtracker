@@ -7,23 +7,29 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { User } from '@prisma/client'
+import qs from 'querystring'
 
 import { Config } from '../config/config'
+import { MailService } from '../mail/mail.service'
+import { MailType } from '../mail/mail.types'
 import { PrismaService } from '../prisma/prisma.service'
 
 import { AUTH_ERROR } from './auth.error'
 import { JwtDto, TokensDto } from './dto/jwt.dto'
-import { OAuthInput } from './dto/oauth.input'
+import { OAuthInput } from './dto/oauth.dto'
+import { ResetPasswordInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
 import { UpdatePasswordInput } from './dto/update-password.input'
+import { VerifyEmailInput } from './dto/verify-email.input'
 import { PasswordService } from './password.service'
 
 @Injectable()
 export class AuthService {
   constructor(
     readonly jwtService: JwtService,
-    readonly prisma: PrismaService,
     readonly passwordService: PasswordService,
+    readonly mailService: MailService,
+    readonly prisma: PrismaService,
     readonly config: Config,
   ) {}
 
@@ -37,14 +43,22 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(payload.password)
 
     try {
+      const code = this.generateCode()
+
       const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
+          emailCode: code,
           auth: 'LOCAL',
           role: 'USER',
           status: 'UNCONFIRMED',
         },
+      })
+
+      await this.mailService.sendMail(MailType.LOCAL_SIGNUP, user, {
+        code: code,
+        link: this.config.nest.url + '/auth/confirm',
       })
 
       return this.generateTokens({ userId: user.id })
@@ -103,8 +117,11 @@ export class AuthService {
           },
         })
 
+        await this.mailService.sendMail(MailType.OAUTH_SIGNUP, newUser, {})
+
         return newUser
       } catch (e) {
+        console.log(e)
         throw new InternalServerErrorException(AUTH_ERROR.OAUTH_FAILED)
       }
     }
@@ -126,6 +143,52 @@ export class AuthService {
 
   // ────────────────────────────────────────────────────────────────────────────────
 
+  generateCode(): string {
+    return String(Math.floor(Math.random() * 899999 + 100000))
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  async verifyEmailRequest(email: string) {
+    const user = await this.getUserByEmail(email)
+
+    if (!user || user.status !== 'UNCONFIRMED') {
+      return
+    }
+
+    const code = this.generateCode()
+
+    await this.prisma.user.update({
+      data: {
+        emailCode: code,
+      },
+      where: { id: user.id },
+    })
+
+    await this.mailService.sendMail(MailType.VERIFY_RESEND, user, {
+      code: code,
+      link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
+    })
+  }
+
+  async verifyEmailConfirm(data: VerifyEmailInput) {
+    const user = await this.getUserByEmail(data.email)
+
+    if (!user || !user.emailCode || user.emailCode !== data.code || user.status !== 'UNCONFIRMED') {
+      throw new ForbiddenException(AUTH_ERROR.EMAIL_VERIFICATION_FAILED)
+    }
+
+    return this.prisma.user.update({
+      data: {
+        emailCode: null,
+        status: 'CONFIRMED',
+      },
+      where: { id: user.id },
+    })
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
   async updatePassword(userId: string, userPassword: string, data: UpdatePasswordInput) {
     const passwordValid = await this.passwordService.validatePassword(
       data.oldPassword,
@@ -143,6 +206,46 @@ export class AuthService {
         password: hashedPassword,
       },
       where: { id: userId },
+    })
+  }
+
+  async resetPaswordRequest(email: string) {
+    const user = await this.getUserByEmail(email)
+
+    if (!user || user.status !== 'CONFIRMED') {
+      return
+    }
+
+    const code = this.generateCode()
+
+    await this.mailService.sendMail(MailType.RESET_PASSWORD, user, {
+      code: code,
+      link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
+    })
+
+    return await this.prisma.user.update({
+      data: {
+        passwordCode: code,
+      },
+      where: { id: user.id },
+    })
+  }
+
+  async resetPaswordConfirm(data: ResetPasswordInput) {
+    const user = await this.getUserByEmail(data.email)
+
+    if (!user || user.passwordCode !== data.code || user.status !== 'CONFIRMED') {
+      throw new ForbiddenException(AUTH_ERROR.PASSWORD_RESET_FAILED)
+    }
+
+    const hashedPassword = await this.passwordService.hashPassword(data.newPassword)
+
+    return await this.prisma.user.update({
+      data: {
+        passwordCode: null,
+        password: hashedPassword,
+      },
+      where: { id: user.id },
     })
   }
 

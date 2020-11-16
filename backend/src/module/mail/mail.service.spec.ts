@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing'
 
 import { ConfigModule } from '../config/config.module'
 
-import { MailType } from './mail.interface'
 import { MailModule } from './mail.module'
 import { MailService } from './mail.service'
+import { MailType } from './mail.types'
 
 describe('MailService', () => {
   let service: MailService
@@ -19,10 +19,14 @@ describe('MailService', () => {
 
   describe('works', () => {
     it('should send "welcome mail"', async () => {
-      const info = await service.sendMail(MailType.WELCOME, {
-        name: 'Jakub',
-        email: 'vadistic@gmail.com',
-      })
+      const info = await service.sendMail(
+        MailType.OAUTH_SIGNUP,
+        {
+          firstname: 'Jakub',
+          email: 'vadistic@gmail.com',
+        } as any,
+        {},
+      )
 
       expect(info).toBeDefined()
       expect(info.accepted.length).toBe(1)

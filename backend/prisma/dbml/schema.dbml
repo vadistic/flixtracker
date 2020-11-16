@@ -9,12 +9,13 @@ Table User {
   email String [unique, not null]
   auth StrategyType [not null]
   status UserStatus [not null]
-  emailToken String
-  password String
   firstname String
   lastname String
   posts Post
   role UserRole [not null]
+  emailCode String
+  passwordCode String
+  password String
 }
 
 Table Post {

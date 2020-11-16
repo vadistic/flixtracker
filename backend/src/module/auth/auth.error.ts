@@ -10,6 +10,9 @@ export const AUTH_ERROR = {
 
   UNVERIFIED_OAUTH: `Social login email is not verified`,
 
+  EMAIL_VERIFICATION_FAILED: `Could not confirm email`,
+  PASSWORD_RESET_FAILED: `Could not reset password`,
+
   // 401 - unauthorized
   UNAUTHORIZED: `Unauthorized`,
   INVALID_REFRESH_TOKEN: `Invalid refresh token`,
