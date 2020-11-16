@@ -11,7 +11,7 @@ services:
       - ../.env
     environment:
       DB_HOST: postgres
-      DATABASE_URL: ${DATABASE_URL}
+      DB_URL: ${DB_URL}
 
   postgres:
     image: postgres:12

@@ -10,9 +10,9 @@ import { AuthController } from './auth.controller'
 import { GqlAuthGuard } from './auth.guard'
 import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
-import { GoogleStrategy } from './google.strategy'
-import { JwtStrategy } from './jwt.strategy'
 import { PasswordService } from './password.service'
+import { GoogleStrategy } from './strategy/google.strategy'
+import { JwtStrategy } from './strategy/jwt.strategy'
 
 @Module({
   imports: [

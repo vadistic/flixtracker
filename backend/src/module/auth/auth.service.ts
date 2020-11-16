@@ -11,10 +11,10 @@ import { User } from '@prisma/client'
 import { Config } from '../config/config'
 import { PrismaService } from '../prisma/prisma.service'
 
-import { JwtDto } from './dto/jwt.dto'
-import { OAuthSignupInput } from './dto/oauth.input'
+import { AUTH_ERROR } from './auth.error'
+import { JwtDto, TokensDto } from './dto/jwt.dto'
+import { OAuthInput } from './dto/oauth.input'
 import { SignupInput } from './dto/signup.input'
-import { Token } from './dto/token.model'
 import { UpdatePasswordInput } from './dto/update-password.input'
 import { PasswordService } from './password.service'
 
@@ -27,10 +27,12 @@ export class AuthService {
     readonly config: Config,
   ) {}
 
-  async signup(payload: SignupInput): Promise<Token> {
+  async signup(payload: SignupInput): Promise<TokensDto> {
     const prev = await this.getUserByEmail(payload.email)
 
-    if (prev) throw new ConflictException('Email already used')
+    if (prev) {
+      throw new ConflictException('Email already used')
+    }
 
     const hashedPassword = await this.passwordService.hashPassword(payload.password)
 
@@ -41,67 +43,85 @@ export class AuthService {
           password: hashedPassword,
           auth: 'LOCAL',
           role: 'USER',
+          status: 'UNCONFIRMED',
         },
       })
 
-      return this.generateToken({ userId: user.id })
+      return this.generateTokens({ userId: user.id })
     } catch (e) {
       throw new InternalServerErrorException(e, 'Signup failed')
     }
   }
 
-  async login(email: string, password: string): Promise<Token> {
+  async login(email: string, password: string): Promise<TokensDto> {
     const user = await this.getUserByEmail(email)
 
     if (!user) {
-      throw new UnauthorizedException('Not registered')
+      throw new UnauthorizedException(AUTH_ERROR.NOT_REGISTERED)
+    }
+
+    if (user.status === 'BANNED') {
+      throw new UnauthorizedException(AUTH_ERROR.BANNED)
+    }
+
+    if (user.status === 'UNCONFIRMED') {
+      throw new UnauthorizedException(AUTH_ERROR.EMAIL_UNCONFIRMED)
     }
 
     if (user.auth !== 'LOCAL' || !user.password) {
-      throw new ForbiddenException('Use social authentiation')
+      if (user.auth === 'GOOGLE') {
+        throw new ForbiddenException(AUTH_ERROR.USE_GOOGLE)
+      }
+
+      throw new InternalServerErrorException(AUTH_ERROR.LOGIN_FAILED)
     }
 
     const passwordValid = await this.passwordService.validatePassword(password, user.password)
 
     if (!passwordValid) {
-      throw new UnauthorizedException('Invalid password')
+      throw new UnauthorizedException(AUTH_ERROR.INVALID_PASSWORD)
     }
 
-    return this.generateToken({
+    return this.generateTokens({
       userId: user.id,
     })
   }
 
-  async jwtAuth(payload: JwtDto): Promise<User> {
-    const user = await this.getUserById(payload.userId)
+  async oauth({ email, firstname, lastname, strategy }: OAuthInput): Promise<User> {
+    const user = await this.getUserByEmail(email)
 
     if (!user) {
-      throw new UnauthorizedException()
+      try {
+        const newUser = await this.prisma.user.create({
+          data: {
+            firstname,
+            lastname,
+            email: email,
+            auth: strategy,
+            role: 'USER',
+            status: 'CONFIRMED',
+          },
+        })
+
+        return newUser
+      } catch (e) {
+        throw new InternalServerErrorException(AUTH_ERROR.OAUTH_FAILED)
+      }
+    }
+
+    if (user.auth === 'LOCAL') {
+      throw new UnauthorizedException(AUTH_ERROR.USE_LOCAL)
+    }
+
+    if (user.status === 'BANNED') {
+      throw new UnauthorizedException(AUTH_ERROR.BANNED)
+    }
+
+    if (user.status === 'UNCONFIRMED') {
+      throw new UnauthorizedException(AUTH_ERROR.EMAIL_UNCONFIRMED)
     }
 
     return user
-  }
-
-  async oauth({ email, firstname, lastname, strategy }: OAuthSignupInput): Promise<User> {
-    const user = await this.getUserByEmail(email)
-
-    if (user) return user
-
-    try {
-      const newUser = await this.prisma.user.create({
-        data: {
-          firstname,
-          lastname,
-          email: email,
-          auth: strategy,
-          role: 'USER',
-        },
-      })
-
-      return newUser
-    } catch (e) {
-      throw new InternalServerErrorException(e, 'Signup failed')
-    }
   }
 
   // ────────────────────────────────────────────────────────────────────────────────
@@ -113,7 +133,7 @@ export class AuthService {
     )
 
     if (!passwordValid) {
-      throw new ForbiddenException('Invalid password')
+      throw new ForbiddenException(AUTH_ERROR.INVALID_PASSWORD)
     }
 
     const hashedPassword = await this.passwordService.hashPassword(data.newPassword)
@@ -126,6 +146,8 @@ export class AuthService {
     })
   }
 
+  // ────────────────────────────────────────────────────────────────────────────────
+
   async getUserById(userId: string): Promise<User | null> {
     return this.prisma.user.findOne({ where: { id: userId } })
   }
@@ -134,35 +156,44 @@ export class AuthService {
     return this.prisma.user.findOne({ where: { email: email.toLowerCase() } })
   }
 
-  async getUserFromToken(token: string): Promise<User | null> {
-    const jwt = this.jwtService.decode(token) as JwtDto
+  async getUserByToken(token: string): Promise<User | null> {
+    const payload = this.jwtService.decode(token) as JwtDto
 
-    if (!jwt?.userId) return null
+    if (!payload) return null
 
-    return this.prisma.user.findOne({ where: { id: jwt.userId } })
+    return this.prisma.user.findOne({ where: { email: payload.userId } })
   }
 
-  generateToken(payload: JwtDto): Token {
-    const accessToken = this.jwtService.sign(payload, {
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  generateAccessToken(payload: JwtDto): string {
+    return this.jwtService.sign(payload, {
       expiresIn: this.config.auth.expiresIn,
     })
+  }
 
-    const refreshToken = this.jwtService.sign(payload, {
+  generateRefreshToken(payload: JwtDto): string {
+    return this.jwtService.sign(payload, {
       expiresIn: this.config.auth.refreshIn,
     })
+  }
 
+  generateTokens(payload: JwtDto): TokensDto {
     return {
-      accessToken,
-      refreshToken,
+      accessToken: this.generateAccessToken(payload),
+      refreshToken: this.generateRefreshToken(payload),
+      payload,
     }
   }
 
-  refreshToken(token: string) {
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  refreshToken(refreshToken: string): string {
     try {
-      const { userId } = this.jwtService.verify<JwtDto>(token)
-      return this.generateToken({ userId })
+      const { userId } = this.jwtService.verify<JwtDto>(refreshToken)
+      return this.generateAccessToken({ userId })
     } catch (e) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException(AUTH_ERROR.INVALID_REFRESH_TOKEN)
     }
   }
 }

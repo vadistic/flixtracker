@@ -4,7 +4,7 @@ import { IsEmail } from 'class-validator'
 
 registerEnumType(StrategyType, { name: 'StrategyType' })
 
-export class OAuthSignupInput {
+export class OAuthInput {
   @Field()
   @IsEmail()
   email: string

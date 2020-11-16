@@ -4,6 +4,7 @@ import { Resolver, Query, Parent, Args, ResolveField } from '@nestjs/graphql'
 import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { PrismaService } from '../../module/prisma/prisma.service'
 import { UserIdArgs } from '../user/dto/user-id.args'
+import { UserModel } from '../user/dto/user.model'
 
 import { PostConnection } from './dto/post-connection.model'
 import { PostIdArgs } from './dto/post-id.args'
@@ -61,7 +62,7 @@ export class PostResolver {
     return this.prisma.post.findOne({ where: { id: id.postId } })
   }
 
-  @ResolveField('author')
+  @ResolveField('author', type => UserModel)
   async author(@Parent() post: PostModel) {
     return this.prisma.post.findOne({ where: { id: post.id } }).author()
   }

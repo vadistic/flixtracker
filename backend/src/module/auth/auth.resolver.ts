@@ -1,32 +1,33 @@
-import { Resolver, Mutation, Args, Parent, ResolveField } from '@nestjs/graphql'
+import { Resolver, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql'
+
+import { UserModel } from '../../feature/user/dto/user.model'
 
 import { AuthService } from './auth.service'
-import { Auth } from './dto/auth.model'
+import { AuthModel } from './dto/auth.model'
 import { LoginInput } from './dto/login.input'
 import { SignupInput } from './dto/signup.input'
-import { Token } from './dto/token.model'
 
-@Resolver(() => Auth)
+@Resolver(() => AuthModel)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(returns => Auth)
-  async signup(@Args('data') data: SignupInput): Promise<Token> {
+  @Mutation(returns => AuthModel)
+  async signup(@Args('data') data: SignupInput): Promise<AuthModel> {
     return this.authService.signup(data)
   }
 
-  @Mutation(returns => Auth)
-  async login(@Args('data') { email, password }: LoginInput): Promise<Token> {
+  @Mutation(returns => AuthModel)
+  async login(@Args('data') { email, password }: LoginInput): Promise<AuthModel> {
     return this.authService.login(email, password)
   }
 
-  @Mutation(returns => Token)
-  refreshToken(@Args('token') token: string) {
-    return this.authService.refreshToken(token)
+  @Mutation(returns => String)
+  refreshToken(@Args('refreshToken') refreshToken: string) {
+    return this.authService.refreshToken(refreshToken)
   }
 
-  @ResolveField('user')
-  async user(@Parent() auth: Auth) {
-    return await this.authService.getUserFromToken(auth.accessToken)
+  @ResolveField(type => UserModel)
+  async user(@Parent() auth: AuthModel) {
+    return this.authService.getUserByToken(auth.accessToken)
   }
 }

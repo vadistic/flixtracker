@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
 
-import { DateScalar } from './common/scalars/date.scalar'
+import { DateTimeScalar } from './common/scalars/date-time.scalar'
 import { DemoModule } from './feature/demo/demo.module'
 import { PostModule } from './feature/post/post.module'
 import { UserModule } from './feature/user/user.module'
@@ -21,6 +21,6 @@ import { ConfigModule } from './module/config/config.module'
     DemoModule,
   ],
   controllers: [],
-  providers: [DateScalar],
+  providers: [DateTimeScalar],
 })
 export class AppModule {}

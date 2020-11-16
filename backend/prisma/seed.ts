@@ -15,7 +15,7 @@ async function main() {
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       role: 'USER',
       auth: 'LOCAL',
-
+      status: 'CONFIRMED',
       posts: {
         create: {
           title: 'Join us for Prisma Day 2019 in Berlin',
@@ -32,6 +32,7 @@ async function main() {
       lastname: 'Simpson',
       role: 'ADMIN',
       auth: 'LOCAL',
+      status: 'CONFIRMED',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       posts: {
         create: [

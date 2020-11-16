@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL")
 }
 
 generator client {
@@ -18,16 +18,19 @@ enum StrategyType {
 }
 
 model User {
-  id        String       @id @default(cuid())
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-  email     String       @unique
-  auth      StrategyType
-  password  String?
-  firstname String?
-  lastname  String?
-  posts     Post[]
-  role      Role
+  id         String       @id @default(cuid())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  email      String       @unique
+  auth       StrategyType
+  status     UserStatus
+  emailToken String?
+  password   String?
+  firstname  String?
+  lastname   String?
+  posts      Post[]
+  role       UserRole
+
 }
 
 model Post {
@@ -41,7 +44,13 @@ model Post {
   authorId  String?
 }
 
-enum Role {
+enum UserRole {
   ADMIN
   USER
+}
+
+enum UserStatus {
+  CONFIRMED
+  UNCONFIRMED
+  BANNED
 }

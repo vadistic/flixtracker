@@ -1,7 +1,7 @@
 FROM node:12
 RUN openssl version -v
 RUN uname -a
-RUN echo $DATABASE_URL
+RUN echo $DB_URL
 
 # Create app directory
 WORKDIR /app

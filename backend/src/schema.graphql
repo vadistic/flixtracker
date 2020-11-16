@@ -11,8 +11,8 @@ type Auth {
   user: User!
 }
 
-"""Date custom scalar type"""
-scalar Date
+"""Date & time scalar type"""
+scalar DateTime
 
 input LoginInput {
   email: String!
@@ -20,9 +20,8 @@ input LoginInput {
 }
 
 type Mutation {
-  changePassword(data: UpdatePasswordInput!): User!
   login(data: LoginInput!): Auth!
-  refreshToken(token: String!): Token!
+  refreshToken(refreshToken: String!): String!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
 }
@@ -47,13 +46,13 @@ type Post {
   content: String!
 
   """Identifies the date and time when the object was created."""
-  createdAt: Date!
+  createdAt: DateTime!
   id: ID!
   published: Boolean!
   title: String!
 
   """Identifies the date and time when the object was last updated."""
-  updatedAt: Date!
+  updatedAt: DateTime!
 }
 
 type PostConnection {
@@ -91,30 +90,11 @@ type Query {
   userPostCollection(userId: String!): [Post!]!
 }
 
-"""User role"""
-enum Role {
-  ADMIN
-  USER
-}
-
 input SignupInput {
   email: String!
   firstname: String
   lastname: String
   password: String!
-}
-
-type Token {
-  """JWT access token"""
-  accessToken: String!
-
-  """JWT refresh token"""
-  refreshToken: String!
-}
-
-input UpdatePasswordInput {
-  newPassword: String!
-  oldPassword: String!
 }
 
 input UpdateUserInput {
@@ -124,14 +104,20 @@ input UpdateUserInput {
 
 type User {
   """Identifies the date and time when the object was created."""
-  createdAt: Date!
+  createdAt: DateTime!
   email: String!
   firstname: String
   id: ID!
   lastname: String
   posts: [Post!]!
-  role: Role!
+  role: UserRole!
 
   """Identifies the date and time when the object was last updated."""
-  updatedAt: Date!
+  updatedAt: DateTime!
+}
+
+"""User role"""
+enum UserRole {
+  ADMIN
+  USER
 }

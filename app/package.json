@@ -6,23 +6,32 @@
     "dev": "vite",
     "build": "vite build",
     "format": "prettier -w -l src",
-    "lint": "eslint --ext ts,tsx src"
+    "lint": "eslint --ext ts,tsx src",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.5",
     "@chakra-ui/icons": "^1.0.0",
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
-    "@pika/react": "^16.13.1",
     "@pika/react-dom": "^16.13.1",
+    "@pika/react": "^16.13.1",
     "framer-motion": "^2.9.4",
-    "react": "^16.14.0",
+    "graphql": "^15.4.0",
     "react-dom": "^16.14.0",
-    "react-router-dom": "^5.2.0"
+    "react-router-dom": "^5.2.0",
+    "react": "^16.14.0"
   },
   "devDependencies": {
-    "@types/react": "^16.9.56",
+    "@graphql-codegen/cli": "1.19.1",
+    "@graphql-codegen/fragment-matcher": "2.0.0",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.18.0",
+    "@graphql-codegen/typescript-operations": "1.17.9",
+    "@graphql-codegen/typescript-react-apollo": "2.1.1",
+    "@graphql-codegen/typescript": "1.17.11",
     "@types/react-dom": "^16.9.9",
+    "@types/react": "^16.9.56",
     "@vadistic/eslint-config": "^0.5.3",
     "@vadistic/prettier-config": "^0.5.2",
     "eslint": "^7.13.0",
@@ -30,8 +39,8 @@
     "prettier": "^2.1.2",
     "ts-jest": "^26.4.4",
     "typescript": "^4.0.5",
-    "vite": "^1.0.0-rc.9",
-    "vite-plugin-react": "^3.0.2"
+    "vite-plugin-react": "^3.0.2",
+    "vite": "^1.0.0-rc.9"
   },
   "prettier": "@vadistic/prettier-config"
 }

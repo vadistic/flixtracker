@@ -1,13 +1,13 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { User } from '@prisma/client'
 import { Request } from 'express'
 import { Strategy } from 'passport-jwt'
 
-import { Config } from '../config/config'
-
-import { AuthService } from './auth.service'
-import { JwtDto } from './dto/jwt.dto'
+import { Config } from '../../config/config'
+import { AUTH_ERROR } from '../auth.error'
+import { AuthService } from '../auth.service'
+import { JwtDto } from '../dto/jwt.dto'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -19,7 +19,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtDto): Promise<User> {
-    return this.authService.jwtAuth(payload)
+    const user = await this.authService.getUserById(payload.userId)
+
+    if (!user) {
+      throw new UnauthorizedException(AUTH_ERROR.UNAUTHORIZED)
+    }
+
+    if (user.status === 'BANNED') {
+      throw new UnauthorizedException(AUTH_ERROR.BANNED)
+    }
+
+    if (user.status === 'UNCONFIRMED') {
+      throw new UnauthorizedException(AUTH_ERROR.EMAIL_UNCONFIRMED)
+    }
+
+    return user
   }
 }
 
