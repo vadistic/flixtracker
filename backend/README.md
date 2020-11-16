@@ -1,18 +1,6 @@
 # Instructions
 
-Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www.prisma.io/).
-
-> Checkout [NestJS Prisma Schematics](https://github.com/marcjulian/nestjs-prisma) to automatically add Prisma support to your Nest application.
-
-## Version
-
-| Branch                                                                                                       |  Nest | Prisma                                               |  Graphql                                                              |
-| ------------------------------------------------------------------------------------------------------------ | ----- | ---------------------------------------------------- | --------------------------------------------------------------------- |
-| master                                                                                                       | v7    | [prisma2](https://github.com/prisma/prisma2)         | [Code-first](https://docs.nestjs.com/graphql/quick-start#code-first)  |
-| [Prisma2 Code First](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-6-prisma2-code-first) | v6    | [prisma2-preview](https://github.com/prisma/prisma2) | [Code-first](https://github.com/19majkel94/type-graphql)              |
-| [Prisma1 Code First](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-6-code-first)         | v6    | [v1](https://github.com/prisma/prisma)               | [Code-first](https://github.com/19majkel94/type-graphql)              |
-| [Prisma1 SDL First]()                                                                                        | v6    | [v1](https://github.com/prisma/prisma)               | [SDL First](https://docs.nestjs.com/graphql/quick-start#schema-first) |
-| [Prisma1 SDL First](https://github.com/fivethree-team/nestjs-prisma-starter/tree/nest-5)                     | v5    | [v1](https://github.com/prisma/prisma)               | [SDL First](https://docs.nestjs.com/graphql/quick-start#schema-first) |
+TODO: Add description here!
 
 ## Features
 
@@ -27,36 +15,23 @@ Starter template for 😻 [NestJS](https://nestjs.com/) and [Prisma](https://www
 - [Instructions](#instructions)
   - [Features](#features)
   - [Overview](#overview)
-  - [Prisma Setup](#prisma-setup)
+  - [Setup](#setup)
     - [1. Install Dependencies](#1-install-dependencies)
-    - [2. PostgreSQL with Docker](#2-PostgreSQL-with-docker)
+    - [2. PostgreSQL with Docker](#2-postgresql-with-docker)
     - [3. Prisma: Prisma Migrate](#3-prisma-prisma-migrate)
-    - [4. Prisma: Prisma Client JS](#4-prisma-client-js)
+    - [4. Prisma: Prisma Client JS](#4-prisma-prisma-client-js)
     - [5. Seed the database data with this script](#5-seed-the-database-data-with-this-script)
     - [6. Start NestJS Server](#6-start-nestjs-server)
-  - [GraphQL Playground](#graphql-playground)
-  - [Rest Api](#rest-api)
-  - [Docker](#docker)
-  - [Schema Development](#schema-development)
-  - [NestJS - Api Schema](#nestjs---api-schema)
-    - [Resolver](#resolver)
-  - [GraphQL Client](#graphql-client)
-    - [Angular](#angular)
-      - [Setup](#setup)
-      - [Queries](#queries)
-      - [Mutations](#mutations)
-      - [Subscriptions](#subscriptions)
-      - [Authentication](#authentication)
+  - [Usage](#usage)
+    - [1. GraphQL Playground](#1-graphql-playground)
+    - [2. Rest Api](#2-rest-api)
+    - [3. Docker](#3-docker)
+    - [3. Scripts](#3-scripts)
+    - [5. Schema Development](#5-schema-development)
 
-## Prisma Setup
+## Setup
 
 ### 1. Install Dependencies
-
-Install [Nestjs CLI](https://docs.nestjs.com/cli/usages) to start and [generate CRUD resources](https://trilon.io/blog/introducing-cli-generators-crud-api-in-1-minute)
-
-```bash
-npm i -g @nestjs/cli
-```
 
 Install the dependencies for the Nest application:
 
@@ -78,7 +53,7 @@ npm run docker:db
 
 ### 3. Prisma: Prisma Migrate
 
-[Prisma Migrate](https://github.com/prisma/prisma2/tree/master/docs/prisma-migrate) is used to manage the schema and migration of the database. Prisma datasource requires an environment variable `DATABASE_URL` for the connection to the PostgreSQL database. Copy [prisma/example.env](prisma/example.env) and rename to `.env`. If you made any updates to the PostgreSQL variables (`POSTGRES_USER`, `POSTGRES_PASSWORD` `POSTGRES_DB`), please update them in your [prisma/.env](prisma/.env) file which is used by Prisma Migrate and for seeding the database.
+[Prisma Migrate](https://github.com/prisma/prisma2/tree/master/docs/prisma-migrate) is used to manage the schema and migration of the database. Prisma datasource requires an environment variable `DB_URL` for the connection to the PostgreSQL database.
 
 Saving the migration of the database:
 
@@ -135,11 +110,11 @@ Run Nest Server in Production mode:
 npm run start:prod
 ```
 
-GraphQL Playground for the NestJS Server is available here: http://localhost:3000/graphql
+GraphQL Playground for the NestJS Server is available here: <http://localhost:3000/graphql>
 
-**[⬆ back to top](#overview)**
+## Usage
 
-## GraphQL Playground
+### 1. GraphQL Playground
 
 Open up the [example GraphQL queries](graphql/auth.graphql) and copy them to the GraphQL Playground. Some queries and mutations are secured by an auth guard. You have to acquire a JWT token from `signup` or `login`. Add the `accessToken`as followed to **HTTP HEADERS** in the playground and replace `YOURTOKEN` here:
 
@@ -149,313 +124,54 @@ Open up the [example GraphQL queries](graphql/auth.graphql) and copy them to the
 }
 ```
 
-## Rest Api
+### 2. Rest Api
 
 [RESTful API](http://localhost:3000/api) documentation available with Swagger.
 
-## Docker
+### 3. Docker
 
-Nest server is a Node.js application and it is easily [dockerized](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/).
-
-See the [Dockerfile](./Dockerfile) on how to build a Docker image of your Nest server.
-
-Now to build a Docker image of your own Nest server simply run:
+You can also setup a the database and Nest application with the docker-compose
 
 ```bash
-# give your docker image a name
-docker build -t <your username>/nest-prisma-server .
-# for example
-docker build -t nest-prisma-server .
+# building new docker images
+yarn docker:build
+
+# start docker compose
+yarn docker
+
+# start only dependencies (without nest app itself)
+yarn docker:dev
 ```
 
-After Docker build your docker image you are ready to start up a docker container running the nest server:
+### 3. Scripts
+
+You can use common linting scripts
 
 ```bash
-docker run -d -t -p 3000:3000 --env-file .env nest-prisma-server
+# lint
+yarn lint
+
+# typecheck
+yarn typecheck
+
+# format
+yarn format
+
+# test
+yarn test
+yarn test:e2e
+
 ```
 
-Now open up [localhost:3000](http://localhost:3000) to verify that your nest server is running.
-
-When you run your NestJS application in a Docker container update your [.env](.env) file
-
-```diff
-- DB_HOST=localhost
-# replace with name of the database container
-+ DB_HOST=postgres
-
-# Prisma database connection
-+ DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DB_HOST}:${DB_PORT}/${POSTGRES_DB}?schema=${DB_SCHEMA}&sslmode=prefer
-```
-
-If `DATABASE_URL` is missing in the root `.env` file, which is loaded into the Docker container, the NestJS application will exit with the following error:
-
-```bash
-(node:19) UnhandledPromiseRejectionWarning: Error: error: Environment variable not found: DATABASE_URL.
-  -->  schema.prisma:3
-   | 
- 2 |   provider = "postgresql"
- 3 |   url      = env("DATABASE_URL")
-```
-
-### Docker Compose
-
-You can also setup a the database and Nest application with the docker-compose 
-
-```bash
-# building new NestJS docker image
-docker-compose build
-# or
-npm run docker:build
-
-# start docker-compose
-docker-compose up -d
-# or
-npm run docker
-```
-
-## Schema Development
+### 5. Schema Development
 
 Update the Prisma schema `prisma/schema.prisma` and after that run the following two commands:
 
 ```bash
-npx prisma generate
+yarn prisma generate
 # or in watch mode
-npx prisma generate --watch
+yarn prisma generate --watch
 # or
-npm run prisma:generate
-npm run prisma:generate:watch
+yarn prisma:generate
+yarn prisma:generate:watch
 ```
-
-**[⬆ back to top](#overview)**
-
-## NestJS - Api Schema
-
-The [schema.graphql](./src/schema.graphql) is generated with [code first approach](https://docs.nestjs.com/graphql/quick-start#code-first). The schema is generated from the [models](./src/models/user.ts), the [resolvers](./src/resolvers/auth/auth.resolver.ts) and the [input](./src/resolvers/auth/dto/login.input.ts) classes.
-
-You can use [class-validator](https://docs.nestjs.com/techniques/validation) to validate your inputs and arguments.
-
-### Resolver
-
-To implement the new query, a new resolver function needs to be added to `users.resolver.ts`.
-
-```ts
-@Query(returns => User)
-async getUser(@Args() args): Promise<User> {
-  return await this.prisma.client.user(args);
-}
-```
-
-Restart the NestJS server and this time the Query to fetch a `user` should work.
-
-**[⬆ back to top](#overview)**
-
-## GraphQL Client
-
-A GraphQL client is necessary to consume the GraphQL api provided by the NestJS Server.
-
-Checkout [Apollo](https://www.apollographql.com/) a popular GraphQL client which offers several clients for React, Angular, Vue.js, Native iOS, Native Android and more.
-
-### Angular
-
-#### Setup
-
-To start using [Apollo Angular](https://www.apollographql.com/docs/angular/basics/setup.html) simply run in an Angular and Ionic project:
-
-```bash
-ng add apollo-angular
-```
-
-`HttpLink` from apollo-angular requires the `HttpClient`. Therefore, you need to add the `HttpClientModule` to the `AppModule`:
-
-```ts
-imports: [BrowserModule,
-    HttpClientModule,
-    ...,
-    GraphQLModule],
-```
-
-You can also add the `GraphQLModule` in the `AppModule` to make `Apollo` available in your Angular App.
-
-You need to set the URL to the NestJS GraphQL Api. Open the file `src/app/graphql.module.ts` and update `uri`:
-
-```ts
-const uri = 'http://localhost:3000/graphql';
-```
-
-To use Apollo-Angular you can inject `private apollo: Apollo` into the constructor of a page, component or service.
-
-**[⬆ back to top](#overview)**
-
-#### Queries
-
-To execute a query you can use:
-
-```ts
-this.apollo.query({query: YOUR_QUERY});
-
-# or
-
-this.apollo.watchQuery({
-  query: YOUR_QUERY
-}).valueChanges;
-```
-
-Here is an example how to fetch your profile from the NestJS GraphQL Api:
-
-```ts
-const CurrentUserProfile = gql`
-  query CurrentUserProfile {
-    me {
-      id
-      email
-      name
-    }
-  }
-`;
-
-@Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-})
-export class HomePage implements OnInit {
-  data: Observable<any>;
-
-  constructor(private apollo: Apollo) {}
-
-  ngOnInit() {
-    this.data = this.apollo.watchQuery({
-      query: CurrentUserProfile,
-    }).valueChanges;
-  }
-}
-```
-
-Use the `AsyncPipe` and [SelectPipe](https://www.apollographql.com/docs/angular/basics/queries.html#select-pipe) to unwrap the data Observable in the template:
-
-```html
-<div *ngIf="data | async | select: 'me' as me">
-  <p>Me id: {{me.id}}</p>
-  <p>Me email: {{me.email}}</p>
-  <p>Me name: {{me.name}}</p>
-</div>
-```
-
-Or unwrap the data using [RxJs](https://www.apollographql.com/docs/angular/basics/queries.html#rxjs).
-
-This will end up in an `GraphQL error` because `Me` is protected by an `@UseGuards(GqlAuthGuard)` and requires an `Bearer TOKEN`.
-Please refer to the [Authentication](#authentication) section.
-
-**[⬆ back to top](#overview)**
-
-#### Mutations
-
-To execute a mutation you can use:
-
-```ts
-this.apollo.mutate({
-  mutation: YOUR_MUTATION,
-});
-```
-
-Here is an example how to login into your profile using the `login` Mutation:
-
-```ts
-const Login = gql`
-  mutation Login {
-    login(email: "test@example.com", password: "pizzaHawaii") {
-      token
-      user {
-        id
-        email
-        name
-      }
-    }
-  }
-`;
-
-@Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-})
-export class HomePage implements OnInit {
-  data: Observable<any>;
-
-  constructor(private apollo: Apollo) {}
-
-  ngOnInit() {
-    this.data = this.apollo.mutate({
-      mutation: Login,
-    });
-  }
-}
-```
-
-**[⬆ back to top](#overview)**
-
-#### Subscriptions
-
-To execute a subscription you can use:
-
-```ts
-this.apollo.subscribe({
-  query: YOUR_SUBSCRIPTION_QUERY,
-});
-```
-
-**[⬆ back to top](#overview)**
-
-#### Authentication
-
-To authenticate your requests you have to add your `TOKEN` you receive on `signup` and `login` [mutation](#mutations) to each request which is protected by the `@UseGuards(GqlAuthGuard)`.
-
-Because the apollo client is using `HttpClient` under the hood you are able to simply use an `Interceptor` to add your token to the requests.
-
-Create the following class:
-
-```ts
-import { Injectable } from '@angular/core';
-import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
-} from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-@Injectable()
-export class TokenInterceptor implements HttpInterceptor {
-  constructor() {}
-
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    const token = 'YOUR_TOKEN'; // get from local storage
-    if (token !== undefined) {
-      req = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    }
-
-    return next.handle(req);
-  }
-}
-```
-
-Add the Interceptor to the `AppModule` providers like this:
-
-```ts
-providers: [
-    ...
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    ...
-  ]
-```
-
-After you configured the Interceptor and retrieved the `TOKEN` from storage your request will succeed on resolvers with `@UseGuards(GqlAuthGuard)`.
-
-**[⬆ back to top](#overview)**
