@@ -1,7 +1,8 @@
 import { Body, Controller, Get, NotFoundException, Query, Post } from '@nestjs/common'
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger'
 
-import { MoviesFilterDto, MovieCreateDto } from './dto/movie.dto'
+import { MovieCreateDto } from './dto/movie-create.dto'
+import { MoviesFilterDto } from './dto/movie-filter.dto'
 import { MovieModel } from './dto/movie.model'
 import { MovieService } from './movie.service'
 

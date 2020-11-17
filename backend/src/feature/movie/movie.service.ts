@@ -5,19 +5,20 @@ import { OmdbResultType } from '../../module/omdb/omdb.interfaces'
 import { OmdbService } from '../../module/omdb/omdb.service'
 import { PrismaService } from '../../module/prisma/prisma.service'
 
-import { MoviesFilterDto, MovieCreateDto } from './dto/movie.dto'
+import { MovieCreateDto } from './dto/movie-create.dto'
+import { MoviesFilterDto } from './dto/movie-filter.dto'
 import { MOVIE_ERROR } from './movie.error'
 
 @Injectable()
 export class MovieService {
   constructor(readonly prisma: PrismaService, readonly omdbService: OmdbService) {}
 
-  async getMovies({ take, skip, cursor, ...where }: MoviesFilterDto) {
+  async getMovies({ take, skip, cursor, direction, orderBy, ...where }: MoviesFilterDto) {
     return this.prisma.movie.findMany({
       skip,
       take,
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { createdAt: 'asc' },
+      orderBy: orderBy ? { [orderBy]: direction } : { createdAt: direction },
       where,
     })
   }
@@ -36,7 +37,7 @@ export class MovieService {
 
     try {
       const movie = await this.prisma.movie.create({
-        data: mergeDefined(omdbMovie, data) as any,
+        data: mergeDefined<any, any>(omdbMovie, data),
       })
 
       return movie
