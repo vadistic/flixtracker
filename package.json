@@ -9,10 +9,12 @@
   "engines": {
     "node": "14.x||12.x"
   },
+  "workspaces": [
+    "app",
+    "backend"
+  ],
   "scripts": {
-    "build:app": "yarn --cwd app install && yarn --cwd app build",
-    "build:backend": "yarn --cwd backend install && yarn --cwd backend build",
-    "build": "yarn build:app && yarn build:backend",
+    "build": "yarn workspaces run build",
     "start": "node ./backend/dist/main"
   }
 }
