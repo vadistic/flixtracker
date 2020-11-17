@@ -1,6 +1,7 @@
 import { Injectable, UseFilters } from '@nestjs/common'
 import { Movie } from '@prisma/client'
 
+import { OrderDirection } from '../../common/order/order-direction'
 import { mergeDefined } from '../../common/types/empty-keys'
 import { OmdbResultType } from '../../module/omdb/omdb.interfaces'
 import { OmdbService } from '../../module/omdb/omdb.service'
@@ -11,6 +12,7 @@ import { MovieCreateDto } from './dto/movie-create.dto'
 import { MoviesFilterDto } from './dto/movie-filter.dto'
 import { MoviesFilterInput } from './dto/movie-filter.input'
 import { MovieIdInput } from './dto/movie-id.input'
+import { MovieOrderBy } from './dto/movie-order.input'
 import { MovieUpdateDto } from './dto/movie-update.dto'
 import { MovieUpdateInput } from './dto/movie-update.input'
 import { MOVIE_ERROR } from './movie.error'
@@ -24,15 +26,15 @@ export class MovieService {
     take,
     skip,
     cursor,
-    direction,
-    orderBy,
+    direction = OrderDirection.asc,
+    orderBy = MovieOrderBy.createdAt,
     ...where
   }: MoviesFilterDto & MoviesFilterInput) {
     return await this.prisma.movie.findMany({
       skip,
       take,
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: orderBy ? { [orderBy]: direction } : { createdAt: direction },
+      orderBy: { [orderBy]: direction },
       where: {
         ...where,
         title: { contains: where.title },
