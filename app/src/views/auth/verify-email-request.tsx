@@ -4,42 +4,45 @@ import { Send } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { ResetPasswordRequestInput, useResetPasswordRequestMutation } from '../../graphql/generated'
+import { useResetPasswordRequestMutation, VerifyEmailRequestInput } from '../../graphql/generated'
 import { handleNavigateTo, navigateTo } from '../../routes'
 
 import { FormActions, FormBox, FormCallout } from './components/form'
 import { EmailFormField } from './components/inputs'
 
-export const RESET_PASSWORD_REQUEST_MUTATION = gql`
-  mutation ResetPasswordRequest($data: ResetPasswordRequestInput!) {
-    resetPasswordRequest(data: $data)
+export const VERIFY_EMAIL_REQUEST_MUTATION = gql`
+  mutation VerifyEmailRequest($data: VerifyEmailRequestInput!) {
+    verifyEmailRequest(data: $data)
   }
 `
 
-export const RecoverAccountView: React.FC = () => {
-  const form = useForm<ResetPasswordRequestInput>({
-    mode: 'onBlur',
-  })
+export const VerifyEmailRequestView: React.FC = () => {
+  const form = useForm<VerifyEmailRequestInput>({ mode: 'onBlur' })
 
-  const [resetPasswordRequest, mutation] = useResetPasswordRequestMutation({
+  const [resetPasswordConfirm, mutation] = useResetPasswordRequestMutation({
     onError: () => {
       /* noop */
     },
     onCompleted: () => {
+      // TODO: pass data
       navigateTo('/reset')
     },
   })
 
-  const handleSubmit = form.handleSubmit(async (data: ResetPasswordRequestInput) => {
-    await resetPasswordRequest({ variables: { data } })
+  const handleSubmit = form.handleSubmit(async data => {
+    console.log('resetPasswordConfirm')
+    await resetPasswordConfirm({ variables: { data } })
   })
 
   return (
     <Box>
       <FormBox onSubmit={handleSubmit}>
-        <Heading level="2">Recover account / password reset</Heading>
+        <Heading level="2">Resend email confirmation</Heading>
 
-        <Paragraph>Provide account email and password reset code will be sent to you.</Paragraph>
+        <Paragraph>
+          If you did not receive confiormation email you can request another one here. Try checking
+          spam folder.
+        </Paragraph>
 
         <FormCallout type="error">{mutation.error?.message}</FormCallout>
 
@@ -55,9 +58,8 @@ export const RecoverAccountView: React.FC = () => {
             icon={<Send />}
           />
 
-          <Anchor onClick={handleNavigateTo('/reset')}>Enter password reset code</Anchor>
-
           <Anchor onClick={handleNavigateTo('/login')}>Go to login</Anchor>
+          <Anchor onClick={handleNavigateTo('/recover')}>Reset password again</Anchor>
         </FormActions>
       </FormBox>
     </Box>

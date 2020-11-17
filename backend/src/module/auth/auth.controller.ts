@@ -10,7 +10,7 @@ import { AUTH_ERROR } from './auth.error'
 import { AuthService } from './auth.service'
 import { JwtDto } from './dto/jwt.dto'
 import { ResetPasswordConfirmInput } from './dto/reset-password.input'
-import { VerifyEmailInput } from './dto/verify-email.input'
+import { VerifyEmailConfirmInput } from './dto/verify-email.input'
 
 @Controller('/auth')
 export class AuthController {
@@ -62,7 +62,7 @@ export class AuthController {
   }
 
   @Get('/verify')
-  async verifyEmail(@Res() res: Response, @Query() data: VerifyEmailInput): Promise<void> {
+  async verifyEmail(@Res() res: Response, @Query() data: VerifyEmailConfirmInput): Promise<void> {
     try {
       const user = await this.authService.verifyEmailConfirm(data)
 

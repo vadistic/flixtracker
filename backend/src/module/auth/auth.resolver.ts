@@ -7,7 +7,7 @@ import { AuthModel } from './dto/auth.model'
 import { LoginInput } from './dto/login.input'
 import { ResetPasswordConfirmInput, ResetPasswordRequestInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
-import { VerifyEmailInput } from './dto/verify-email.input'
+import { VerifyEmailConfirmInput, VerifyEmailRequestInput } from './dto/verify-email.input'
 
 @Resolver(() => AuthModel)
 export class AuthResolver {
@@ -23,8 +23,15 @@ export class AuthResolver {
     return this.authService.login(email, password)
   }
 
+  @Mutation(returns => String)
+  async verifyEmailRequest(@Args('data') data: VerifyEmailRequestInput): Promise<string> {
+    await this.authService.verifyEmailRequest(data)
+
+    return data.email
+  }
+
   @Mutation(returns => AuthModel)
-  async verifyEmailConfirm(@Args('data') data: VerifyEmailInput): Promise<AuthModel> {
+  async verifyEmailConfirm(@Args('data') data: VerifyEmailConfirmInput): Promise<AuthModel> {
     const user = await this.authService.verifyEmailConfirm(data)
 
     return this.authService.generateTokens({ userId: user.id })

@@ -26,12 +26,12 @@ export const RESET_PASSWORD_CONFIRM_MUTATION = gql`
   }
 `
 
-export interface ResetPasswordFormData extends ResetPasswordConfirmInput {
+export interface ResetPasswordConfirmFormData extends ResetPasswordConfirmInput {
   confirmPassword: string
 }
 
-export const ResetPasswordView: React.FC = () => {
-  const form = useForm<ResetPasswordFormData>({ mode: 'onBlur' })
+export const ResetPasswordConfirmView: React.FC = () => {
+  const form = useForm<ResetPasswordConfirmFormData>({ mode: 'onBlur' })
 
   const [resetPasswordConfirm, mutation] = useResetPasswordConfirmMutation({
     onError: () => {

@@ -71,6 +71,7 @@ export const LoginView: React.FC = () => {
           />
           <Anchor onClick={handleNavigateTo('/signup')}>Create account</Anchor>
           <Anchor onClick={handleNavigateTo('/recover')}>Forgotten password</Anchor>
+          <Anchor onClick={handleNavigateTo('/resend')}>Resend confirmation email</Anchor>
         </FormActions>
       </FormBox>
     </Box>

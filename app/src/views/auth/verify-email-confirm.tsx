@@ -4,14 +4,14 @@ import { Send } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { VerifyEmailInput, useVerifyEmailConfirmMutation } from '../../graphql/generated'
+import { useVerifyEmailConfirmMutation, VerifyEmailConfirmInput } from '../../graphql/generated'
 import { handleNavigateTo } from '../../routes'
 
 import { FormActions, FormBox } from './components/form'
 import { CodeFormField, EmailFormField } from './components/inputs'
 
 export const VERIFY_EMAIL_CONFIRM_MUTATION = gql`
-  mutation VerifyEmailConfirm($data: VerifyEmailInput!) {
+  mutation VerifyEmailConfirm($data: VerifyEmailConfirmInput!) {
     verifyEmailConfirm(data: $data) {
       ...AuthFragment
       user {
@@ -21,8 +21,8 @@ export const VERIFY_EMAIL_CONFIRM_MUTATION = gql`
   }
 `
 
-export const VerifyEmailView: React.FC = () => {
-  const [verifyEmail] = useVerifyEmailConfirmMutation({
+export const VerifyEmailConfirmView: React.FC = () => {
+  const [verifyEmail, mutation] = useVerifyEmailConfirmMutation({
     onError: () => {
       /* noop */
     },
@@ -31,7 +31,7 @@ export const VerifyEmailView: React.FC = () => {
     },
   })
 
-  const form = useForm<VerifyEmailInput>({
+  const form = useForm<VerifyEmailConfirmInput>({
     mode: 'onBlur',
   })
 
@@ -55,7 +55,7 @@ export const VerifyEmailView: React.FC = () => {
             size="large"
             label="Reset password"
             type="submit"
-            disabled={true}
+            disabled={mutation.called && !mutation.error}
             icon={<Send />}
           />
 

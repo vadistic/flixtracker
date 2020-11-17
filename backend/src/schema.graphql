@@ -26,7 +26,8 @@ type Mutation {
   resetPasswordRequest(data: ResetPasswordRequestInput!): String!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
-  verifyEmailConfirm(data: VerifyEmailInput!): Auth!
+  verifyEmailConfirm(data: VerifyEmailConfirmInput!): Auth!
+  verifyEmailRequest(data: VerifyEmailRequestInput!): String!
 }
 
 """
@@ -135,7 +136,11 @@ enum UserRole {
   USER
 }
 
-input VerifyEmailInput {
+input VerifyEmailConfirmInput {
   code: String!
+  email: String!
+}
+
+input VerifyEmailRequestInput {
   email: String!
 }

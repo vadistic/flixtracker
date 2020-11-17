@@ -2,27 +2,30 @@ import { navigate } from 'hookrouter'
 import React from 'react'
 
 import { LoginView } from './views/auth/login'
-import { RecoverAccountView } from './views/auth/recover-account'
-import { ResetPasswordView } from './views/auth/reset-password'
+import { ResetPasswordConfirmView } from './views/auth/reset-password-confirm'
+import { ResetPasswordRequestView } from './views/auth/reset-password-request'
 import { SignupView } from './views/auth/signup'
-import { VerifyEmailView } from './views/auth/verify-email'
+import { VerifyEmailConfirmView } from './views/auth/verify-email-confirm'
+import { VerifyEmailRequestView } from './views/auth/verify-email-request'
+import { DetailsView } from './views/details'
 import { HomeView } from './views/home'
+import { MoviesView } from './views/movies'
 import { PromoView } from './views/promo'
 
 export const publicRoutes = {
   '/login': () => <LoginView />,
   '/signup': () => <SignupView />,
-  '/recover': () => <RecoverAccountView />,
-  '/verify': () => <VerifyEmailView />,
-  '/reset': () => <ResetPasswordView />,
+  '/recover': () => <ResetPasswordRequestView />,
+  '/verify': () => <VerifyEmailConfirmView />,
+  '/resend': () => <VerifyEmailRequestView />,
+  '/reset': () => <ResetPasswordConfirmView />,
   '/': () => <PromoView />,
 }
 
 export const appRoutes = {
   '/browse': () => <LoginView />,
-  '/signup': () => <SignupView />,
-  '/recover': () => <RecoverAccountView />,
-  '/reset': () => <ResetPasswordView />,
+  '/movies': () => <MoviesView />,
+  '/details': () => <DetailsView />,
   '/': () => <HomeView />,
 }
 

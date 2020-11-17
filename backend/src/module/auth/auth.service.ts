@@ -20,7 +20,7 @@ import { OAuthInput } from './dto/oauth.dto'
 import { ResetPasswordConfirmInput, ResetPasswordRequestInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
 import { UpdatePasswordInput } from './dto/update-password.input'
-import { VerifyEmailInput } from './dto/verify-email.input'
+import { VerifyEmailConfirmInput, VerifyEmailRequestInput } from './dto/verify-email.input'
 import { PasswordService } from './password.service'
 
 @Injectable()
@@ -149,8 +149,8 @@ export class AuthService {
 
   // ────────────────────────────────────────────────────────────────────────────────
 
-  async verifyEmailRequest(email: string) {
-    const user = await this.getUserByEmail(email)
+  async verifyEmailRequest(data: VerifyEmailRequestInput) {
+    const user = await this.getUserByEmail(data.email)
 
     if (!user || user.status !== 'UNCONFIRMED') {
       return
@@ -158,7 +158,7 @@ export class AuthService {
 
     const code = this.generateCode()
 
-    await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       data: {
         emailCode: code,
       },
@@ -169,9 +169,11 @@ export class AuthService {
       code: code,
       link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
     })
+
+    return updatedUser
   }
 
-  async verifyEmailConfirm(data: VerifyEmailInput) {
+  async verifyEmailConfirm(data: VerifyEmailConfirmInput) {
     const user = await this.getUserByEmail(data.email)
 
     if (!user || !user.emailCode || user.emailCode !== data.code || user.status !== 'UNCONFIRMED') {
@@ -218,17 +220,19 @@ export class AuthService {
 
     const code = this.generateCode()
 
-    await this.mailService.sendMail(MailType.RESET_PASSWORD, user, {
-      code: code,
-      link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
-    })
-
-    return await this.prisma.user.update({
+    const updatedUser = await this.prisma.user.update({
       data: {
         passwordCode: code,
       },
       where: { id: user.id },
     })
+
+    await this.mailService.sendMail(MailType.RESET_PASSWORD, user, {
+      code: code,
+      link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
+    })
+
+    return updatedUser
   }
 
   async resetPaswordConfirm(data: ResetPasswordConfirmInput) {

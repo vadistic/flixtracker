@@ -79,7 +79,7 @@ export const SignupView: React.FC = () => {
             icon={<Google />}
             href={AUTH_ENPOINT + '/google'}
           />
-          <Anchor onClick={handleNavigateTo('/login')}>Login instead ...</Anchor>
+          <Anchor onClick={handleNavigateTo('/login')}>Login instead</Anchor>
           <Anchor onClick={handleNavigateTo('/recover')}>Forgotten password</Anchor>
         </FormActions>
       </FormBox>
