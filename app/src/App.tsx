@@ -6,6 +6,7 @@ import { AppFooter } from './components/layout/footer'
 import { AppHeader } from './components/layout/header'
 import { AppSidebar } from './components/layout/sidebar'
 import { appRoutes, publicRoutes } from './routes'
+import { NotFoundView } from './views/not-found'
 export const App: React.FC = () => {
   const authenticated = false
 
@@ -18,7 +19,7 @@ export const App: React.FC = () => {
       <Box direction="row" height={{ min: '100%' }} flex="grow">
         {authenticated && <AppSidebar />}
 
-        <Main pad="medium">{route}</Main>
+        <Main pad="medium">{route ?? <NotFoundView />}</Main>
       </Box>
 
       <AppFooter />
