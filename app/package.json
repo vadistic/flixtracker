@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "author": "Jakub Wadas <vadistic@gmail.com>",
   "license": "MIT",
+  "repository": "https://github.com/vadistic/flixtracker.git",
   "private": true,
   "scripts": {
     "prebuild": "yarn clean && yarn codegen",

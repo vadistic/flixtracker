@@ -1,0 +1,12 @@
+{
+  "name": "flixtracker",
+  "version": "0.1.0",
+  "description": "TODO",
+  "author": "Jakub Wadas <vadistic.gmail.com>",
+  "license": "MIT",
+  "repository": "https://github.com/vadistic/flixtracker.git",
+  "private": true,
+  "engines": {
+    "node": "14.x||12.x"
+  }
+}
