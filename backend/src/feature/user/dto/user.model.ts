@@ -19,6 +19,7 @@ export class UserModel extends BaseModel {
   @ApiProperty({ type: String, required: false })
   firstname?: string
 
+  @Field({ nullable: true })
   @ApiProperty({ type: String, required: false })
   lastname?: string
 
