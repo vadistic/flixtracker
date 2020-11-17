@@ -16,7 +16,6 @@ beforeAll(async () => {
   }).compile()
 
   await utilModule.init()
-
   await utilModule.get(UtilService).bootstrap()
 }, 300000)
 

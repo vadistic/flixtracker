@@ -9,6 +9,7 @@ import { PrismaService } from '../../module/prisma/prisma.service'
 
 import { MovieCreateDto } from './dto/movie-create.dto'
 import { MoviesFilterDto } from './dto/movie-filter.dto'
+import { MoviesFilterInput } from './dto/movie-filter.input'
 import { MovieIdInput } from './dto/movie-id.input'
 import { MovieUpdateDto } from './dto/movie-update.dto'
 import { MovieUpdateInput } from './dto/movie-update.input'
@@ -19,13 +20,23 @@ import { MOVIE_ERROR } from './movie.error'
 export class MovieService {
   constructor(readonly prisma: PrismaService, readonly omdbService: OmdbService) {}
 
-  async findManyMovies({ take, skip, cursor, direction, orderBy, ...where }: MoviesFilterDto) {
+  async findManyMovies({
+    take,
+    skip,
+    cursor,
+    direction,
+    orderBy,
+    ...where
+  }: MoviesFilterDto & MoviesFilterInput) {
     return await this.prisma.movie.findMany({
       skip,
       take,
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: orderBy ? { [orderBy]: direction } : { createdAt: direction },
-      where,
+      where: {
+        ...where,
+        title: { contains: where.title },
+      },
     })
   }
 

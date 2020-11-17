@@ -204,10 +204,10 @@ enum OrderDirection {
 
 type Query {
   comment(where: CommentIdInput!): Comment
-  comments(cursor: ID, order: CommentOrderInput!, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
+  comments(cursor: String, order: CommentOrderInput!, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
   me: User!
   movie(where: MovieIdInput!): Movie
-  movies(cursor: ID, order: MovieOrderInput!, skip: Int, take: Int, where: MoviesFilterInput): [Movie!]!
+  movies(cursor: String, order: MovieOrderInput!, skip: Int, take: Int, where: MoviesFilterInput): [Movie!]!
 }
 
 type Rating {
