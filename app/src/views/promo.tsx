@@ -11,14 +11,13 @@ export const PromoView: React.FC = () => {
       <Heading level="3">What it is?</Heading>
 
       <Paragraph>
-        Fixtracker is an ap that allows tou to track watched movies and TV shows.
+        Fixtracker is an app that (should) allow you to track watched movies and TV shows.
       </Paragraph>
 
       <Heading level="3">Endpoints</Heading>
 
       <Box direction="column" gap="medium">
         <Anchor href="/api">/api</Anchor>
-        <Anchor href="/auth">/auth</Anchor>
         <Anchor href="/graphql">/graphql</Anchor>
       </Box>
 
