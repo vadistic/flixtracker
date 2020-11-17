@@ -1,6 +1,6 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
+import { InputType, registerEnumType } from '@nestjs/graphql'
 
+import { ModelField } from '../../../common/base/field.decorator'
 import { createOrderByEnum } from '../../../common/order/order-direction'
 import { Order } from '../../../common/order/order.input'
 
@@ -22,10 +22,6 @@ registerEnumType(MovieOrderBy, { name: 'MovieOrderBy' })
 
 @InputType()
 export class MovieOrderInput extends Order {
-  @Field(type => MovieOrderBy, { nullable: true })
-  @ApiProperty({
-    enum: MovieOrderBy,
-    required: false,
-  })
+  @ModelField(() => MovieOrderBy, { nullable: true, enum: true })
   orderBy?: MovieOrderBy
 }

@@ -1,10 +1,12 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { InputType } from '@nestjs/graphql'
+
+import { ModelField } from '../../../common/base/field.decorator'
 
 @InputType()
 export class CommentFilterInput {
-  @Field({ nullable: true })
+  @ModelField(() => String, { nullable: true })
   movieId?: string
 
-  @Field({ nullable: true })
+  @ModelField(() => String, { nullable: true })
   content?: string
 }

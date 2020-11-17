@@ -1,9 +1,10 @@
-import { Body, Controller, Get, NotFoundException, Query, Post } from '@nestjs/common'
+import { Body, Controller, Get, Query, Post } from '@nestjs/common'
 import { ApiBody, ApiOkResponse } from '@nestjs/swagger'
 
 import { MovieCreateDto } from './dto/movie-create.dto'
 import { MoviesFilterDto } from './dto/movie-filter.dto'
 import { MovieModel } from './dto/movie.model'
+import { MOVIE_ERROR } from './movie.error'
 import { MovieService } from './movie.service'
 
 @Controller('/api/movies')
@@ -20,7 +21,9 @@ export class MovieController {
   }
 
   @Post()
-  @ApiBody({ type: MovieCreateDto })
+  @ApiBody({
+    type: MovieCreateDto,
+  })
   @ApiOkResponse({
     type: MovieModel,
   })
@@ -28,7 +31,7 @@ export class MovieController {
     const movie = await this.movieService.postMovie(data)
 
     if (!movie) {
-      throw new NotFoundException('Movie not found')
+      throw MOVIE_ERROR.NOT_ON_OMDB()
     }
 
     return movie

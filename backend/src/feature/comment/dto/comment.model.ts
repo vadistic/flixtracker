@@ -1,23 +1,19 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
-import { IsNotEmpty, MaxLength } from 'class-validator'
+import { ID, ObjectType } from '@nestjs/graphql'
+import { MaxLength } from 'class-validator'
 
 import { BaseModel } from '../../../common/base/base.model'
+import { ModelField } from '../../../common/base/field.decorator'
 import { COMMENT } from '../comment.contants'
 
 @ObjectType('Comment')
 export class CommentModel extends BaseModel {
-  @IsNotEmpty()
   @MaxLength(COMMENT.MAX_LENGTH)
-  @Field()
-  @ApiProperty()
+  @ModelField(() => String)
   content: string
 
-  @Field(type => ID)
-  @ApiProperty()
+  @ModelField(() => ID)
   movieId: string
 
-  @Field(type => ID)
-  @ApiProperty()
+  @ModelField(() => ID)
   authorId: string
 }

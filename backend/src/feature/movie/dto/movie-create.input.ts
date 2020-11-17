@@ -1,12 +1,12 @@
-import { Field, OmitType, PartialType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
+import { OmitType, PartialType } from '@nestjs/graphql'
+
+import { ModelField } from '../../../common/base/field.decorator'
 
 import { MovieModel } from './movie.model'
 
 export class MovieCreateInput extends PartialType(
   OmitType(MovieModel, ['id', 'createdAt', 'updatedAt']),
 ) {
-  @Field()
-  @ApiProperty()
+  @ModelField(() => String)
   title: string
 }

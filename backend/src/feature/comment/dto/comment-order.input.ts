@@ -1,6 +1,6 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
+import { InputType, registerEnumType } from '@nestjs/graphql'
 
+import { ModelField } from '../../../common/base/field.decorator'
 import { createOrderByEnum } from '../../../common/order/order-direction'
 import { Order } from '../../../common/order/order.input'
 
@@ -10,11 +10,7 @@ export const CommentOrderBy = createOrderByEnum<CommentModel>()(['createdAt'])
 
 @InputType()
 export class CommentOrderInput extends Order {
-  @Field(type => CommentOrderBy, { nullable: true })
-  @ApiProperty({
-    enum: CommentOrderBy,
-    required: false,
-  })
+  @ModelField(() => CommentOrderBy, { nullable: true, enum: true })
   orderBy?: CommentOrderBy
 }
 

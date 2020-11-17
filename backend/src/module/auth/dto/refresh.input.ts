@@ -1,17 +1,15 @@
-import { Field, InputType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
+import { InputType } from '@nestjs/graphql'
+
+import { ModelField } from '../../../common/base/field.decorator'
 
 @InputType()
 export class RefreshInput {
-  @IsString()
-  @Field()
+  @ModelField(() => String)
   token: string
 }
 
 @InputType()
 export class RefreshQueryDto {
-  @IsString()
-  @ApiProperty({ required: false })
+  @ModelField(() => String, { nullable: true })
   token?: string
 }

@@ -1,9 +1,9 @@
-import { Field, ID, InputType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
+import { ID, InputType } from '@nestjs/graphql'
+
+import { ModelField } from '../../../common/base/field.decorator'
 
 @InputType()
 export class MovieIdInput {
-  @Field(type => ID)
-  @ApiProperty()
+  @ModelField(() => ID)
   movieId: string
 }
