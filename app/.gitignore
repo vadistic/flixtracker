@@ -1,3 +1,7 @@
+# build
+build
+dist
+
 # generated
 src/graphql/generated.tsx
 
