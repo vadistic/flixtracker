@@ -1,13 +1,18 @@
+import { gql } from '@apollo/client'
 import { Anchor, Box, Button, FormField, Heading, TextInput } from 'grommet'
 import { Send } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { FormActions, FormBox } from '../components/form'
-import { handleNavigateTo } from '../routes'
-import { isEmail } from '../utils/validation'
+import { FormActions, FormBox } from '../../components/form'
+import { handleNavigateTo } from '../../routes'
+import { isEmail } from '../../utils/validation'
 
-// export const RECOVER_MUTATION = gql``
+export const RESET_PASSWORD_MUTATION = gql`
+  mutation ResetPassword($data: ResetPasswordInput!) {
+    resetPassword(data: $data)
+  }
+`
 
 export const RecoverView: React.FC = () => {
   const form = useForm<any>()

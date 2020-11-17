@@ -4,12 +4,12 @@ import { Google, Login } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { FormBox, FormActions, FormCallout } from '../components/form'
-import { AUTH_ENPOINT } from '../config'
-import { LoginInput, useLoginMutation } from '../graphql/generated'
-import { mutations } from '../graphql/mutations'
-import { handleNavigateTo, navigateTo } from '../routes'
-import { isEmail } from '../utils/validation'
+import { FormBox, FormActions, FormCallout } from '../../components/form'
+import { AUTH_ENPOINT } from '../../config'
+import { LoginInput, useLoginMutation } from '../../graphql/generated'
+import { mutations } from '../../graphql/mutations'
+import { handleNavigateTo, navigateTo } from '../../routes'
+import { isEmail } from '../../utils/validation'
 
 export const LOGIN_MUTATION = gql`
   mutation LoginMutation($data: LoginInput!) {

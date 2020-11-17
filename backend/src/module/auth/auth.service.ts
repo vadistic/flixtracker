@@ -17,7 +17,7 @@ import { PrismaService } from '../prisma/prisma.service'
 import { AUTH_ERROR } from './auth.error'
 import { JwtDto, TokensDto } from './dto/jwt.dto'
 import { OAuthInput } from './dto/oauth.dto'
-import { ResetPasswordInput } from './dto/reset-password.input'
+import { ResetPasswordConfirmInput, ResetPasswordRequestInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
 import { UpdatePasswordInput } from './dto/update-password.input'
 import { VerifyEmailInput } from './dto/verify-email.input'
@@ -209,7 +209,7 @@ export class AuthService {
     })
   }
 
-  async resetPaswordRequest({ email }: ResetPasswordInput) {
+  async resetPaswordRequest({ email }: ResetPasswordRequestInput) {
     const user = await this.getUserByEmail(email)
 
     if (!user || user.status !== 'CONFIRMED') {
@@ -231,7 +231,7 @@ export class AuthService {
     })
   }
 
-  async resetPaswordConfirm(data: ResetPasswordInput) {
+  async resetPaswordConfirm(data: ResetPasswordConfirmInput) {
     const user = await this.getUserByEmail(data.email)
 
     if (!user || user.passwordCode !== data.code || user.status !== 'CONFIRMED') {

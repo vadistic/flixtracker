@@ -2,7 +2,14 @@ import { InputType } from '@nestjs/graphql'
 import { IsEmail, IsNotEmpty, Length, MinLength } from 'class-validator'
 
 @InputType()
-export class ResetPasswordInput {
+export class ResetPasswordRequestInput {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string
+}
+
+@InputType()
+export class ResetPasswordConfirmInput {
   @Length(6, 6)
   @IsNotEmpty()
   code: string

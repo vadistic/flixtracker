@@ -22,10 +22,11 @@ input LoginInput {
 type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(refreshToken: String!): String!
-  resetPassword(data: ResetPasswordInput!): String!
+  resetPasswordConfirm(data: ResetPasswordConfirmInput!): Auth!
+  resetPasswordRequest(data: ResetPasswordRequestInput!): String!
   signup(data: SignupInput!): Auth!
   updateUser(data: UpdateUserInput!): User!
-  verifyEmail(data: VerifyEmailInput!): String!
+  verifyEmailConfirm(data: VerifyEmailInput!): Auth!
 }
 
 """
@@ -92,10 +93,14 @@ type Query {
   userPostCollection(userId: String!): [Post!]!
 }
 
-input ResetPasswordInput {
+input ResetPasswordConfirmInput {
   code: String!
   email: String!
   newPassword: String!
+}
+
+input ResetPasswordRequestInput {
+  email: String!
 }
 
 input SignupInput {

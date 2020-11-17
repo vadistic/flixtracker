@@ -9,7 +9,7 @@ import { APP_ROUTES } from './auth.contants'
 import { AUTH_ERROR } from './auth.error'
 import { AuthService } from './auth.service'
 import { JwtDto } from './dto/jwt.dto'
-import { ResetPasswordInput } from './dto/reset-password.input'
+import { ResetPasswordConfirmInput } from './dto/reset-password.input'
 import { VerifyEmailInput } from './dto/verify-email.input'
 
 @Controller('/auth')
@@ -75,7 +75,10 @@ export class AuthController {
   }
 
   @Get('/reset')
-  async resetPassword(@Res() res: Response, @Query() data: ResetPasswordInput): Promise<void> {
+  async resetPassword(
+    @Res() res: Response,
+    @Query() data: ResetPasswordConfirmInput,
+  ): Promise<void> {
     try {
       const user = await this.authService.resetPaswordConfirm(data)
 

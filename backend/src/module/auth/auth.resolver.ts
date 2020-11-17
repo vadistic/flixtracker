@@ -5,7 +5,7 @@ import { UserModel } from '../../feature/user/dto/user.model'
 import { AuthService } from './auth.service'
 import { AuthModel } from './dto/auth.model'
 import { LoginInput } from './dto/login.input'
-import { ResetPasswordInput } from './dto/reset-password.input'
+import { ResetPasswordConfirmInput, ResetPasswordRequestInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
 import { VerifyEmailInput } from './dto/verify-email.input'
 
@@ -23,18 +23,29 @@ export class AuthResolver {
     return this.authService.login(email, password)
   }
 
-  @Mutation(returns => String)
-  async verifyEmail(@Args('data') data: VerifyEmailInput) {
-    return this.authService.verifyEmailConfirm(data)
+  @Mutation(returns => AuthModel)
+  async verifyEmailConfirm(@Args('data') data: VerifyEmailInput): Promise<AuthModel> {
+    const user = await this.authService.verifyEmailConfirm(data)
+
+    return this.authService.generateTokens({ userId: user.id })
   }
 
   @Mutation(returns => String)
-  async resetPassword(@Args('data') data: ResetPasswordInput) {
-    return this.authService.resetPaswordRequest(data)
+  async resetPasswordRequest(@Args('data') data: ResetPasswordRequestInput): Promise<string> {
+    await this.authService.resetPaswordRequest(data)
+
+    return data.email
+  }
+
+  @Mutation(returns => AuthModel)
+  async resetPasswordConfirm(@Args('data') data: ResetPasswordConfirmInput): Promise<AuthModel> {
+    const user = await this.authService.resetPaswordConfirm(data)
+
+    return this.authService.generateTokens({ userId: user.id })
   }
 
   @Mutation(returns => String)
-  refreshToken(@Args('refreshToken') refreshToken: string) {
+  refreshToken(@Args('refreshToken') refreshToken: string): string {
     return this.authService.refreshToken(refreshToken)
   }
 
