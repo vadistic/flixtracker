@@ -11,5 +11,6 @@ import { MovieService } from './movie.service'
   imports: [OmdbModule, PrismaModule],
   providers: [MovieService, MovieResolver],
   controllers: [MovieController],
+  exports: [MovieService],
 })
 export class MovieModule {}

@@ -6,16 +6,15 @@ import { Config } from '../config/config'
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor(readonly config: Config) {
-    super({
-      datasources: {
-        db: {
-          url:
-            `postgresql://${config.database.user}:${config.database.pasword}` +
-            `@${config.database.host}:${config.database.port}/` +
-            `${config.database.name}?schema=${config.database.schema}&sslmode=prefer`,
-        },
-      },
-    })
+    super({ datasources: { db: { url: buildUrl(config) } } })
+  }
+
+  get $URL() {
+    return buildUrl(this.config)
+  }
+
+  get $SCHEMA() {
+    return this.config.database.schema
   }
 
   async onModuleInit() {
@@ -26,3 +25,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     await this.$disconnect()
   }
 }
+
+const buildUrl = (config: Config) =>
+  `postgresql://${config.database.user}:${config.database.pasword}` +
+  `@${config.database.host}:${config.database.port}/` +
+  `${config.database.name}?schema=${config.database.schema}&sslmode=prefer`
