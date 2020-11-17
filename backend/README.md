@@ -2,7 +2,7 @@
 
 TODO: Add description here!
 
-## Features
+## Tech
 
 - GraphQL w/ [playground](https://github.com/prisma/graphql-playground)
 - Code-First w/ [decorators](https://docs.nestjs.com/graphql/quick-start#code-first)
@@ -13,9 +13,10 @@ TODO: Add description here!
 ## Overview
 
 - [Instructions](#instructions)
-  - [Features](#features)
+  - [Tech](#tech)
   - [Overview](#overview)
   - [Setup](#setup)
+    - [TL;DR](#tldr)
     - [1. Install Dependencies](#1-install-dependencies)
     - [2. PostgreSQL with Docker](#2-postgresql-with-docker)
     - [3. Prisma: Prisma Migrate](#3-prisma-prisma-migrate)
@@ -24,12 +25,34 @@ TODO: Add description here!
     - [6. Start NestJS Server](#6-start-nestjs-server)
   - [Usage](#usage)
     - [1. GraphQL Playground](#1-graphql-playground)
-    - [2. Rest Api](#2-rest-api)
+    - [2. Rest Api & Swagger Docs](#2-rest-api--swagger-docs)
     - [3. Docker](#3-docker)
     - [3. Scripts](#3-scripts)
+    - [4. Prisma Studio](#4-prisma-studio)
     - [5. Schema Development](#5-schema-development)
 
 ## Setup
+
+### TL;DR
+
+```bash
+  # 1) copy .env.example as .env
+  # 2) install
+  yarn install
+  # 3) run db & maildev
+  yarn docker:dev
+  # 4) run prisma migration
+  yarn prisma:save
+  yarn prisma:up
+  yarn prisma:seed # if you want
+
+  # or skip this all and just do seed script (id does migrations too)
+  yarn prisma:seed
+
+  # 4) run app
+  yarn start
+
+```
 
 ### 1. Install Dependencies
 
@@ -41,7 +64,7 @@ npm install
 
 ### 2. PostgreSQL with Docker
 
-Setup a development PostgreSQL with Docker. Copy [example.env](./example.env) and rename to `.env` which sets the required environments for PostgreSQL such as `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. Update the variables as you wish and select a strong password.
+Setup a development PostgreSQL with Docker. Copy [example.env](./example.env) and rename to `.env` which sets the required environments for PostgreSQL such as `DB_USER`, `DB_USER` and `DB_USER`. Update the variables as you wish and select a strong password.
 
 Start the PostgreSQL database
 
@@ -58,17 +81,17 @@ npm run docker:db
 Saving the migration of the database:
 
 ```bash
-npx prisma migrate save --experimental
+yarn prisma migrate save --experimental
 # or
-npm run prisma:save
+yarn run prisma:save
 ```
 
 Perform the database migration:
 
 ```bash
-npx prisma migrate up --experimental
+yarn prisma migrate up --experimental
 # or
-npm run prisma:up
+yarn prisma:up
 ```
 
 ### 4. Prisma: Prisma Client JS
@@ -80,9 +103,9 @@ Generate Prisma Client JS by running
 > **Note**: Every time you update [schema.prisma](prisma/schema.prisma) re-generate Prisma Client JS
 
 ```bash
-npx prisma generate
+yarn prisma generate
 # or
-npm run prisma:generate
+yarn prisma:generate
 ```
 
 ### 5. Seed the database data with this script
@@ -90,7 +113,7 @@ npm run prisma:generate
 Execute the script with this command:
 
 ```bash
-npm run seed
+yarn prisma:seed
 ```
 
 ### 6. Start NestJS Server
@@ -98,16 +121,16 @@ npm run seed
 Run Nest Server in Development mode:
 
 ```bash
-npm run start
+yarn start
 
 # watch mode
-npm run start:dev
+yarn start:dev
 ```
 
 Run Nest Server in Production mode:
 
 ```bash
-npm run start:prod
+yarn start:prod
 ```
 
 GraphQL Playground for the NestJS Server is available here: <http://localhost:3000/graphql>
@@ -124,7 +147,9 @@ Open up the [example GraphQL queries](graphql/auth.graphql) and copy them to the
 }
 ```
 
-### 2. Rest Api
+Or just go to <<http://localhost:3000/auth/google>
+
+### 2. Rest Api & Swagger Docs
 
 [RESTful API](http://localhost:3000/api) documentation available with Swagger.
 
@@ -136,7 +161,7 @@ You can also setup a the database and Nest application with the docker-compose
 # building new docker images
 yarn docker:build
 
-# start docker compose
+# start docker compose (needs some env setup)
 yarn docker
 
 # start only dependencies (without nest app itself)
@@ -159,8 +184,17 @@ yarn format
 
 # test
 yarn test
-yarn test:e2e
 
+```
+
+### 4. Prisma Studio
+
+View current database state with prisma studio
+
+```bash
+yarn prisma studio
+# or
+yarn prisma:Studio
 ```
 
 ### 5. Schema Development
