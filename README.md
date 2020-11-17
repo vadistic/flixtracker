@@ -46,9 +46,6 @@ TODO: Add description here!
   yarn prisma:up
   yarn prisma:seed # if you want
 
-  # or skip this all and just do seed script (id does migrations too)
-  yarn prisma:seed
-
   # 4) run app
   yarn start
 

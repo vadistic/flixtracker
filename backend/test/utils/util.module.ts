@@ -1,4 +1,4 @@
-import { Injectable, Module, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
+import { Injectable, Module } from '@nestjs/common'
 
 import { CommentModule } from '../../src/feature/comment/comment.module'
 import { MovieModule } from '../../src/feature/movie/movie.module'
@@ -12,16 +12,8 @@ import { seed } from '../seed'
 import { databaseDrop, prismaMigrateSave, prismaMigrateUp } from './db'
 
 @Injectable()
-export class UtilService implements OnModuleInit, OnModuleDestroy {
+export class UtilService {
   constructor(readonly prisma: PrismaService, readonly movieService: MovieService) {}
-
-  async onModuleInit() {
-    await this.bootstrap()
-  }
-
-  async onModuleDestroy() {
-    await this.clean()
-  }
 
   async bootstrap() {
     await databaseDrop(this.prisma)

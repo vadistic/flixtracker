@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 import { ConfigModule } from '../src/module/config/config.module'
 
-import { UtilModule } from './utils/util.module'
+import { UtilModule, UtilService } from './utils/util.module'
 
 dotenv.config({ path: '.env.test' })
 dotenv.config({ path: '.env' })
@@ -16,8 +16,11 @@ beforeAll(async () => {
   }).compile()
 
   await utilModule.init()
+
+  await utilModule.get(UtilService).bootstrap()
 }, 300000)
 
 afterAll(async () => {
+  await utilModule.get(UtilService).clean()
   await utilModule.close()
 }, 300000)
