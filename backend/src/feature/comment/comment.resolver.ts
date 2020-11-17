@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common'
 import { Query, Args, Mutation } from '@nestjs/graphql'
 import { Resolver } from '@nestjs/graphql'
 
+import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { JwtGuard } from '../../module/auth/jwt.guard'
 import { CtxUser } from '../../module/auth/user.decorator'
 
@@ -9,6 +10,7 @@ import { CommentService } from './comment.service'
 import { CommentCreateInput } from './dto/comment-create.input'
 import { CommentFilterInput } from './dto/comment-filter.input'
 import { CommentIdInput } from './dto/comment-id.input'
+import { CommentOrderInput } from './dto/comment-order.input'
 import { CommentUpdateInput } from './dto/comment-update.input'
 import { CommentModel } from './dto/comment.model'
 
@@ -17,8 +19,12 @@ export class CommentResolver {
   constructor(readonly commentService: CommentService) {}
 
   @Query(returns => [CommentModel])
-  async comments(@Args('where', { nullable: true }) where: CommentFilterInput = {}) {
-    return this.commentService.getComments(where)
+  async comments(
+    @Args('where', { nullable: true }) where: CommentFilterInput = {},
+    @Args('order') order: CommentOrderInput,
+    @Args() pag: PaginationArgs,
+  ) {
+    return this.commentService.getComments({ ...where, ...order, ...pag })
   }
 
   @Query(returns => CommentModel, { nullable: true })

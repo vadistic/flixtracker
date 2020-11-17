@@ -38,6 +38,15 @@ input CommentIdInput {
   commentId: ID!
 }
 
+enum CommentOrderBy {
+  createdAt
+}
+
+input CommentOrderInput {
+  direction: OrderDirection
+  orderBy: CommentOrderBy
+}
+
 input CommentUpdateInput {
   content: String!
 }
@@ -64,9 +73,17 @@ type Mutation {
   verifyEmailRequest(data: VerifyEmailRequestInput!): String!
 }
 
+"""
+Possible directions in which to order a list of items when provided an `orderBy` argument.
+"""
+enum OrderDirection {
+  asc
+  desc
+}
+
 type Query {
   comment(where: CommentIdInput!): Comment
-  comments(where: CommentFilterInput): [Comment!]!
+  comments(cursor: ID, order: CommentOrderInput!, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
   me: User!
 }
 
