@@ -1,11 +1,11 @@
-import { Field, InputType } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
+import { InputType } from '@nestjs/graphql'
+
+import { ModelField } from '../base/field.decorator'
 
 import { OrderDirection } from './order-direction'
 
 @InputType({ isAbstract: true })
 export abstract class Order {
-  @Field(type => OrderDirection, { nullable: true })
-  @ApiProperty({ enum: OrderDirection, required: false })
+  @ModelField(type => OrderDirection, { enum: true, nullable: true })
   direction?: OrderDirection
 }
