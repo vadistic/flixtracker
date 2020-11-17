@@ -1,5 +1,6 @@
 import { Controller, Get, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { ApiCookieAuth, ApiOkResponse } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 import ms from 'ms'
 
@@ -9,6 +10,7 @@ import { APP_ROUTES } from './auth.contants'
 import { AUTH_ERROR } from './auth.error'
 import { AuthService } from './auth.service'
 import { JwtDto } from './dto/jwt.dto'
+import { RefreshQueryDto } from './dto/refresh.input'
 import { ResetPasswordConfirmInput } from './dto/reset-password.input'
 import { VerifyEmailConfirmInput } from './dto/verify-email.input'
 
@@ -50,7 +52,13 @@ export class AuthController {
 
   // TODO: set cookie autmatically
   @Get('/refresh')
-  refresh(@Req() req: Request, @Res() res: Response, @Query('token') queryToken?: string): string {
+  @ApiOkResponse({ type: String })
+  @ApiCookieAuth('refreshToken')
+  refresh(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query() { token: queryToken }: RefreshQueryDto,
+  ): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const token = queryToken ?? req?.cookies?.refreshToken
 

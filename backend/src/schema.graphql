@@ -21,7 +21,7 @@ input LoginInput {
 
 type Mutation {
   login(data: LoginInput!): Auth!
-  refreshToken(refreshToken: String!): String!
+  refreshToken(data: RefreshInput!): String!
   resetPasswordConfirm(data: ResetPasswordConfirmInput!): Auth!
   resetPasswordRequest(data: ResetPasswordRequestInput!): String!
   signup(data: SignupInput!): Auth!
@@ -39,6 +39,10 @@ type Query {
 type Rating {
   source: String!
   value: String!
+}
+
+input RefreshInput {
+  token: String!
 }
 
 input ResetPasswordConfirmInput {

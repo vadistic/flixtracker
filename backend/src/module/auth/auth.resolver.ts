@@ -5,6 +5,7 @@ import { UserModel } from '../../feature/user/dto/user.model'
 import { AuthService } from './auth.service'
 import { AuthModel } from './dto/auth.model'
 import { LoginInput } from './dto/login.input'
+import { RefreshInput } from './dto/refresh.input'
 import { ResetPasswordConfirmInput, ResetPasswordRequestInput } from './dto/reset-password.input'
 import { SignupInput } from './dto/signup.input'
 import { VerifyEmailConfirmInput, VerifyEmailRequestInput } from './dto/verify-email.input'
@@ -52,7 +53,7 @@ export class AuthResolver {
   }
 
   @Mutation(returns => String)
-  refreshToken(@Args('refreshToken') refreshToken: string): string {
+  refreshToken(@Args('data') { token: refreshToken }: RefreshInput): string {
     return this.authService.refreshToken(refreshToken)
   }
 

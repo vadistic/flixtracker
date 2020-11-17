@@ -3,17 +3,6 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "src",
   "compilerOptions": {
-    "plugins": [
-      {
-        "name": "@nestjs/swagger/plugin",
-        "options": {
-          "dtoFileNameSuffix": [".dto.ts", ".model.ts"],
-          "classValidatorShim": false,
-          "introspectComments": true
-        }
-      },
-      "@nestjs/graphql/plugin"
-    ],
     "assets": ["**/*.hbs"]
   }
 }
