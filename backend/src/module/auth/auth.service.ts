@@ -209,7 +209,7 @@ export class AuthService {
     })
   }
 
-  async resetPaswordRequest(email: string) {
+  async resetPaswordRequest({ email }: ResetPasswordInput) {
     const user = await this.getUserByEmail(email)
 
     if (!user || user.status !== 'CONFIRMED') {
