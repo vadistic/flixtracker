@@ -7,9 +7,9 @@ import { ConfigModule } from '../../src/module/config/config.module'
 import { OmdbModule } from '../../src/module/omdb/omdb.module'
 import { PrismaModule } from '../../src/module/prisma/prisma.module'
 import { PrismaService } from '../../src/module/prisma/prisma.service'
+import { seed } from '../seed'
 
 import { databaseDrop, prismaMigrateSave, prismaMigrateUp } from './db'
-import { seed } from './seed'
 
 @Injectable()
 export class UtilService implements OnModuleInit, OnModuleDestroy {

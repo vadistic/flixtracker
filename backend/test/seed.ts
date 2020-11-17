@@ -1,5 +1,5 @@
-import { MovieService } from '../../src/feature/movie/movie.service'
-import { PrismaService } from '../../src/module/prisma/prisma.service'
+import { MovieService } from '../src/feature/movie/movie.service'
+import { PrismaService } from '../src/module/prisma/prisma.service'
 
 export const seed = async (prisma: PrismaService, movieService: MovieService) => {
   await prisma.user.create({

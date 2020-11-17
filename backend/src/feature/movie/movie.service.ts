@@ -62,7 +62,7 @@ export class MovieService {
   }
 
   async updateMovie({ movieId, ...data }: MovieUpdateInput & MovieUpdateDto & MovieIdInput) {
-    const movie = await this.prisma.comment.findOne({ where: { id: movieId } })
+    const movie = await this.prisma.movie.findOne({ where: { id: movieId } })
 
     if (!movie) {
       throw MOVIE_ERROR.NOT_FOUND()
@@ -75,7 +75,7 @@ export class MovieService {
   }
 
   async deleteMovie({ movieId }: MovieIdInput) {
-    const movie = await this.prisma.comment.findOne({ where: { id: movieId } })
+    const movie = await this.prisma.movie.findOne({ where: { id: movieId } })
 
     if (!movie) {
       throw MOVIE_ERROR.NOT_FOUND()
