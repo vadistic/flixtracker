@@ -1,15 +1,16 @@
 import { gql } from '@apollo/client'
-import { Anchor, Box, Button, FormField, Heading, TextInput } from 'grommet'
+import { Anchor, Box, Button, Heading } from 'grommet'
 import { Google, Login } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { FormBox, FormActions, FormCallout } from '../../components/form'
 import { AUTH_ENPOINT } from '../../config'
 import { LoginInput, useLoginMutation } from '../../graphql/generated'
 import { mutations } from '../../graphql/mutations'
 import { handleNavigateTo, navigateTo } from '../../routes'
-import { isEmail } from '../../utils/validation'
+
+import { FormActions, FormBox, FormCallout } from './components/form'
+import { EmailFormField, PasswordFormField } from './components/inputs'
 
 export const LOGIN_MUTATION = gql`
   mutation LoginMutation($data: LoginInput!) {
@@ -47,29 +48,9 @@ export const LoginView: React.FC = () => {
         <Heading level="2">Login</Heading>
         <FormCallout type="error">{error?.message}</FormCallout>
 
-        <FormField label="Email" error={form.errors.email?.message}>
-          <TextInput
-            name="email"
-            type="email"
-            ref={form.register({
-              required: 'Field required',
-              validate: {
-                isEmail: value => isEmail(value) || 'Not a valid email',
-              },
-            })}
-            required></TextInput>
-        </FormField>
+        <EmailFormField form={form} name="email" />
 
-        <FormField label="Password" error={form.errors.password?.message}>
-          <TextInput
-            name="password"
-            type="password"
-            ref={form.register({
-              required: 'Field required',
-              minLength: { value: 8, message: 'Password too short' },
-            })}
-            required></TextInput>
-        </FormField>
+        <PasswordFormField form={form} name="password" />
 
         <FormActions>
           <Button
@@ -88,7 +69,8 @@ export const LoginView: React.FC = () => {
             icon={<Google />}
             href={AUTH_ENPOINT + '/google'}
           />
-          <Anchor onClick={handleNavigateTo('/signup')}>Create account!</Anchor>
+          <Anchor onClick={handleNavigateTo('/signup')}>Create account</Anchor>
+          <Anchor onClick={handleNavigateTo('/recover')}>Forgotten password</Anchor>
         </FormActions>
       </FormBox>
     </Box>

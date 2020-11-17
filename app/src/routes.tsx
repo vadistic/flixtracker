@@ -2,25 +2,27 @@ import { navigate } from 'hookrouter'
 import React from 'react'
 
 import { LoginView } from './views/auth/login'
-import { PromoView } from './views/promo'
-import { RecoverView } from './views/auth/recover'
-import { ResetView } from './views/auth/reset'
+import { RecoverAccountView } from './views/auth/recover-account'
+import { ResetPasswordView } from './views/auth/reset-password'
 import { SignupView } from './views/auth/signup'
+import { VerifyEmailView } from './views/auth/verify-email'
 import { HomeView } from './views/home'
+import { PromoView } from './views/promo'
 
 export const publicRoutes = {
   '/login': () => <LoginView />,
   '/signup': () => <SignupView />,
-  '/recover': () => <RecoverView />,
-  '/reset': () => <ResetView />,
+  '/recover': () => <RecoverAccountView />,
+  '/verify': () => <VerifyEmailView />,
+  '/reset': () => <ResetPasswordView />,
   '/': () => <PromoView />,
 }
 
 export const appRoutes = {
   '/browse': () => <LoginView />,
   '/signup': () => <SignupView />,
-  '/recover': () => <RecoverView />,
-  '/reset': () => <ResetView />,
+  '/recover': () => <RecoverAccountView />,
+  '/reset': () => <ResetPasswordView />,
   '/': () => <HomeView />,
 }
 

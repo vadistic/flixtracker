@@ -1,17 +1,18 @@
 import { gql } from '@apollo/client'
-import { Anchor, Box, Button, FormField, Heading, TextInput } from 'grommet'
+import { Anchor, Box, Button, Heading } from 'grommet'
 import { Google, UserNew } from 'grommet-icons'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { FormBox, FormActions, FormCallout } from '../../components/form'
 import { AUTH_ENPOINT } from '../../config'
 import { SignupInput, useSignupMutation } from '../../graphql/generated'
 import { mutations } from '../../graphql/mutations'
 import { handleNavigateTo, navigateTo } from '../../routes'
-import { isEmail } from '../../utils/validation'
 
-export const SIGNUP_QUERY = gql`
+import { FormActions, FormBox, FormCallout } from './components/form'
+import { ConfirmPasswordFormField, EmailFormField, PasswordFormField } from './components/inputs'
+
+export const SIGNUP_MUTATION = gql`
   mutation Signup($data: SignupInput!) {
     signup(data: $data) {
       accessToken
@@ -23,17 +24,17 @@ export const SIGNUP_QUERY = gql`
   }
 `
 
-export interface SignupData extends SignupInput {
-  confirm: string
+export interface SignupFormData extends SignupInput {
+  confirmPassword: string
 }
 
 export const SignupView: React.FC = () => {
-  const form = useForm<SignupData>({
+  const form = useForm<SignupFormData>({
     mode: 'onBlur',
     reValidateMode: 'onBlur',
   })
 
-  const [loginMutation, { error, loading }] = useSignupMutation({
+  const [loginMutation, mutation] = useSignupMutation({
     onError: () => {
       /* noop */
     },
@@ -44,7 +45,7 @@ export const SignupView: React.FC = () => {
     },
   })
 
-  const handleSubmit = form.handleSubmit(async ({ confirm, ...rest }) => {
+  const handleSubmit = form.handleSubmit(async ({ confirmPassword, ...rest }) => {
     await loginMutation({ variables: { data: rest } })
   })
 
@@ -53,45 +54,13 @@ export const SignupView: React.FC = () => {
       <FormBox onSubmit={handleSubmit}>
         <Heading level="2">Signup</Heading>
 
-        <FormCallout type="error">{error?.message}</FormCallout>
+        <FormCallout type="error">{mutation.error?.message}</FormCallout>
 
-        <FormField label="Email" about="A" error={form.errors.email?.message}>
-          <TextInput
-            name="email"
-            type="email"
-            ref={form.register({
-              required: 'Field required',
-              validate: {
-                isEmail: value => isEmail(value) || 'Not a valid email',
-              },
-            })}
-            required></TextInput>
-        </FormField>
+        <EmailFormField form={form} name="email" />
 
-        <FormField label="Password" error={form.errors.password?.message}>
-          <TextInput
-            name="password"
-            type="password"
-            ref={form.register({
-              required: 'Field required',
-              minLength: { value: 8, message: 'Password too short' },
-            })}
-            required></TextInput>
-        </FormField>
+        <PasswordFormField form={form} name="password" />
 
-        <FormField label="Confirm password" error={form.errors.confirm?.message}>
-          <TextInput
-            name="confirm"
-            type="password"
-            ref={form.register({
-              required: 'Field required',
-              minLength: { value: 8, message: 'Password too short' },
-              validate: {
-                matchPassword: data => data === form.watch('password') || 'Passwords must match',
-              },
-            })}
-            required></TextInput>
-        </FormField>
+        <ConfirmPasswordFormField form={form} name="confirmPassword" compareName="password" />
 
         <FormActions>
           <Button
@@ -99,18 +68,19 @@ export const SignupView: React.FC = () => {
             size="large"
             label="Login"
             type="submit"
-            disabled={loading}
+            disabled={mutation.loading}
             icon={<UserNew />}
           />
           <Button
             secondary
             size="large"
             label="Google authentication"
-            disabled={loading}
+            disabled={mutation.loading}
             icon={<Google />}
             href={AUTH_ENPOINT + '/google'}
           />
           <Anchor onClick={handleNavigateTo('/login')}>Login instead ...</Anchor>
+          <Anchor onClick={handleNavigateTo('/recover')}>Forgotten password</Anchor>
         </FormActions>
       </FormBox>
     </Box>
