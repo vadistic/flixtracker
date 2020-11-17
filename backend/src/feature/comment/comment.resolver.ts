@@ -24,12 +24,12 @@ export class CommentResolver {
     @Args('order') order: CommentOrderInput,
     @Args() pag: PaginationArgs,
   ) {
-    return this.commentService.getComments({ ...where, ...order, ...pag })
+    return this.commentService.findManyComments({ ...where, ...order, ...pag })
   }
 
   @Query(returns => CommentModel, { nullable: true })
   async comment(@Args('where') where: CommentIdInput) {
-    return this.commentService.getComment(where)
+    return this.commentService.findOneComment(where)
   }
 
   @Mutation(returns => CommentModel, { nullable: true })

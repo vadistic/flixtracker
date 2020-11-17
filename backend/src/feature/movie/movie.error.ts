@@ -1,7 +1,9 @@
-import { ConflictException, NotFoundException } from '@nestjs/common'
+import { ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common'
 
 export const MOVIE_ERROR = {
-  NOT_ON_OMDB: () => new NotFoundException('Movie not found in omdb'),
+  NOT_ON_OMDB: () => new ForbiddenException('Movie not on omdb'),
 
-  ALREADY_PRESENT: () => new ConflictException('Movie already present'),
+  ALREADY_PRESENT: () => new ConflictException('Movie already exists'),
+
+  NOT_FOUND: () => new NotFoundException('Movie not found'),
 }

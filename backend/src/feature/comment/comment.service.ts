@@ -21,7 +21,7 @@ import { CommentUpdateInput } from './dto/comment-update.input'
 export class CommentService {
   constructor(readonly prisma: PrismaService) {}
 
-  async getComments({
+  async findManyComments({
     movieId,
     cursor,
     direction = OrderDirection.desc,
@@ -42,7 +42,7 @@ export class CommentService {
     })
   }
 
-  async getComment({ commentId }: CommentIdInput) {
+  async findOneComment({ commentId }: CommentIdInput) {
     return await this.prisma.comment.findOne({ where: { id: commentId } })
   }
 
@@ -65,7 +65,7 @@ export class CommentService {
     userId,
     ...data
   }: CommentIdInput & UserIdInput & CommentUpdateInput & CommentUpdateDto) {
-    const comment = await this.prisma.comment.findFirst({ where: { id: commentId } })
+    const comment = await this.prisma.comment.findOne({ where: { id: commentId } })
 
     if (!comment) {
       throw COMMENT_ERROR.NOT_FOUND()

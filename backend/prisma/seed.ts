@@ -52,9 +52,9 @@ async function main() {
 
   const movieService: MovieService = app.get(MovieService)
 
-  const m1 = await movieService.postMovie({ title: 'Kill bill' })
-  const m2 = await movieService.postMovie({ title: 'The Revenant' })
-  const m3 = await movieService.postMovie({ title: 'Kingdom of Heaven' })
+  const m1 = await movieService.createMovie({ title: 'Kill bill' })
+  const m2 = await movieService.createMovie({ title: 'The Revenant' })
+  const m3 = await movieService.createMovie({ title: 'Kingdom of Heaven' })
 
   console.info(m1, m2, m3)
 

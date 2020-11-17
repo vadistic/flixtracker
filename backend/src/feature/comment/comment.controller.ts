@@ -22,7 +22,7 @@ export class CommentController {
     isArray: true,
   })
   async getComments(@Query() filter: CommentFilterDto, @Param() { movieId }: MovieIdInput) {
-    return this.commentService.getComments({ ...filter, movieId })
+    return this.commentService.findManyComments({ ...filter, movieId })
   }
 
   @Post('/movies/:movieId/comments')
@@ -43,7 +43,7 @@ export class CommentController {
     isArray: true,
   })
   async getComment(@Param() { commentId }: CommentIdInput) {
-    return this.commentService.getComment({ commentId })
+    return this.commentService.findOneComment({ commentId })
   }
 
   @Patch('/comments/:commentId')
