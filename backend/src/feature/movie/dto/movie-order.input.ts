@@ -22,6 +22,6 @@ registerEnumType(MovieOrderBy, { name: 'MovieOrderBy' })
 
 @InputType()
 export class MovieOrderInput extends Order {
-  @ModelField(() => MovieOrderBy, { nullable: true, enum: true })
+  @ModelField(type => MovieOrderBy, { nullable: true, enum: true })
   orderBy?: MovieOrderBy
 }

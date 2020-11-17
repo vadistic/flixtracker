@@ -18,6 +18,7 @@ type Comment {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
+  movie: Movie!
   movieId: ID!
 
   """Identifies the date and time when the object was last updated."""
@@ -59,15 +60,135 @@ input LoginInput {
   password: String!
 }
 
+type Movie {
+  actors: String
+  awards: String
+  boxOffice: String
+  comments: [Comment!]!
+  country: [String!]!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  director: String
+  dvd: String
+  genre: [String!]!
+  id: ID!
+  imdbID: String
+  imdbRating: Float
+  imdbVotes: Int
+  language: [String!]!
+  metascore: Int
+  plot: String
+  poster: String
+  production: String
+  rated: String
+  ratings: [Rating!]!
+  released: DateTime
+  runtime: String
+  title: String!
+  type: MovieType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  website: String
+  writer: String
+  year: Int!
+}
+
+input MovieCreateInput {
+  actors: String
+  awards: String
+  boxOffice: String
+  country: [String!]
+  director: String
+  dvd: String
+  genre: [String!]
+  imdbRating: Float
+  imdbVotes: Int
+  language: [String!]
+  metascore: Int
+  plot: String
+  poster: String
+  production: String
+  rated: String
+  released: DateTime
+  runtime: String
+  title: String!
+  type: MovieType
+  website: String
+  writer: String
+  year: Int
+}
+
+input MovieIdInput {
+  movieId: ID!
+}
+
+enum MovieOrderBy {
+  country
+  createdAt
+  imdbRating
+  imdbVotes
+  title
+  type
+  year
+}
+
+input MovieOrderInput {
+  direction: OrderDirection
+  orderBy: MovieOrderBy
+}
+
+input MoviesFilterInput {
+  imdbID: String
+  title: String
+  type: MovieType
+  year: Int
+}
+
+enum MovieType {
+  EPISODE
+  MOVIE
+  SERIES
+}
+
+input MovieUpdateInput {
+  actors: String
+  awards: String
+  boxOffice: String
+  country: [String!]
+  director: String
+  dvd: String
+  genre: [String!]
+  imdbRating: Float
+  imdbVotes: Int
+  language: [String!]
+  metascore: Int
+  plot: String
+  poster: String
+  production: String
+  rated: String
+  released: DateTime
+  runtime: String
+  title: String
+  type: MovieType
+  website: String
+  writer: String
+  year: Int
+}
+
 type Mutation {
   createComment(data: CommentCreateInput!): Comment
+  createMovie(data: MovieCreateInput!): Movie
   deleteComment(where: CommentIdInput!): Comment
+  deleteMovie(where: MovieIdInput!): Movie
   login(data: LoginInput!): Auth!
   refreshToken(data: RefreshInput!): String!
   resetPasswordConfirm(data: ResetPasswordConfirmInput!): Auth!
   resetPasswordRequest(data: ResetPasswordRequestInput!): String!
   signup(data: SignupInput!): Auth!
   updateComment(data: CommentUpdateInput!, where: CommentIdInput!): Comment
+  updateMovie(data: MovieUpdateInput!, where: MovieIdInput!): Movie
   updateUser(data: UpdateUserInput!): User!
   verifyEmailConfirm(data: VerifyEmailConfirmInput!): Auth!
   verifyEmailRequest(data: VerifyEmailRequestInput!): String!
@@ -85,6 +206,8 @@ type Query {
   comment(where: CommentIdInput!): Comment
   comments(cursor: ID, order: CommentOrderInput!, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
   me: User!
+  movie(where: MovieIdInput!): Movie
+  movies(cursor: ID, order: MovieOrderInput!, skip: Int, take: Int, where: MoviesFilterInput): [Movie!]!
 }
 
 type Rating {

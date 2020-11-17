@@ -4,12 +4,12 @@ import { ModelField } from '../../../common/base/field.decorator'
 
 @InputType()
 export class RefreshInput {
-  @ModelField(() => String)
+  @ModelField(type => String)
   token: string
 }
 
 @InputType()
 export class RefreshQueryDto {
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   token?: string
 }

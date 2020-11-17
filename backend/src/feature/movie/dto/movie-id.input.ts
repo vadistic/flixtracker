@@ -4,6 +4,6 @@ import { ModelField } from '../../../common/base/field.decorator'
 
 @InputType()
 export class MovieIdInput {
-  @ModelField(() => ID)
+  @ModelField(type => ID)
   movieId: string
 }

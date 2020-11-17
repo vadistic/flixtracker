@@ -1,4 +1,5 @@
 import { Injectable, UseFilters } from '@nestjs/common'
+import { Movie } from '@prisma/client'
 
 import { mergeDefined } from '../../common/types/empty-keys'
 import { OmdbResultType } from '../../module/omdb/omdb.interfaces'
@@ -83,5 +84,12 @@ export class MovieService {
     return await this.prisma.movie.delete({
       where: { id: movieId },
     })
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  // FIXME: this should be paginated
+  async getRelatedComments(movie: Movie) {
+    return await this.prisma.movie.findOne({ where: { id: movie.id } }).comments()
   }
 }

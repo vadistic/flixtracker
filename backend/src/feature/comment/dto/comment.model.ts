@@ -8,12 +8,12 @@ import { COMMENT } from '../comment.contants'
 @ObjectType('Comment')
 export class CommentModel extends BaseModel {
   @MaxLength(COMMENT.MAX_LENGTH)
-  @ModelField(() => String)
+  @ModelField(type => String)
   content: string
 
-  @ModelField(() => ID)
+  @ModelField(type => ID)
   movieId: string
 
-  @ModelField(() => ID)
+  @ModelField(type => ID)
   authorId: string
 }

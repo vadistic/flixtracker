@@ -1,4 +1,5 @@
 import { Injectable, UseFilters } from '@nestjs/common'
+import { Comment } from '@prisma/client'
 
 import { OrderDirection } from '../../common/order/order-direction'
 import { PrismaExceptionFilter } from '../../module/prisma/prisma-exception.filter'
@@ -95,5 +96,11 @@ export class CommentService {
     return await this.prisma.comment.delete({
       where: { id: commentId },
     })
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  async getRelatedMovie(comment: Comment) {
+    return await this.prisma.movie.findOne({ where: { id: comment.movieId } })
   }
 }

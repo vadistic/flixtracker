@@ -10,7 +10,7 @@ export const CommentOrderBy = createOrderByEnum<CommentModel>()(['createdAt'])
 
 @InputType()
 export class CommentOrderInput extends Order {
-  @ModelField(() => CommentOrderBy, { nullable: true, enum: true })
+  @ModelField(type => CommentOrderBy, { nullable: true, enum: true })
   orderBy?: CommentOrderBy
 }
 

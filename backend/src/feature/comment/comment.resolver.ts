@@ -1,10 +1,13 @@
 import { UseGuards } from '@nestjs/common'
-import { Query, Args, Mutation } from '@nestjs/graphql'
+import { Query, Args, Mutation, ResolveField, Parent } from '@nestjs/graphql'
 import { Resolver } from '@nestjs/graphql'
+import { Comment } from '@prisma/client'
 
 import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { JwtGuard } from '../../module/auth/jwt.guard'
 import { CtxUser } from '../../module/auth/user.decorator'
+import { PrismaService } from '../../module/prisma/prisma.service'
+import { MovieModel } from '../movie/dto/movie.model'
 
 import { CommentService } from './comment.service'
 import { CommentCreateInput } from './dto/comment-create.input'
@@ -16,7 +19,7 @@ import { CommentModel } from './dto/comment.model'
 
 @Resolver(() => CommentModel)
 export class CommentResolver {
-  constructor(readonly commentService: CommentService) {}
+  constructor(readonly commentService: CommentService, readonly prisma: PrismaService) {}
 
   @Query(returns => [CommentModel])
   async comments(
@@ -52,5 +55,12 @@ export class CommentResolver {
   @UseGuards(JwtGuard)
   async deleteComment(@Args('where') where: CommentIdInput, @CtxUser() user: CtxUser) {
     return this.commentService.deleteComment({ ...where, userId: user.id })
+  }
+
+  // ────────────────────────────────────────────────────────────────────────────────
+
+  @ResolveField(type => MovieModel)
+  async movie(@Parent() comment: Comment) {
+    return this.commentService.getRelatedMovie(comment)
   }
 }

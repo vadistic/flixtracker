@@ -12,81 +12,81 @@ registerEnumType(MovieType, { name: 'MovieType' })
 @ObjectType('Movie')
 export class MovieModel extends BaseModel {
   @Length(2, 255)
-  @ModelField(() => String)
+  @ModelField(type => String)
   title: string
 
   @Min(1888)
   @Max(2030)
-  @ModelField(() => Int)
+  @ModelField(type => Int)
   year: number
 
-  @ModelField(() => MovieType, { enum: true })
+  @ModelField(type => MovieType, { enum: true })
   type: MovieType
 
-  @ModelRelation(() => RatingModel)
-  ratings: RatingModel[] = []
+  @ModelRelation(() => [RatingModel])
+  ratings: RatingModel[]
 
   // --- collection below
 
-  @ModelField(() => [String])
+  @ModelField(type => [String])
   language!: string[]
 
-  @ModelField(() => [String])
+  @ModelField(type => [String])
   country!: string[]
 
-  @ModelField(() => [String])
+  @ModelField(type => [String])
   genre!: string[]
 
   // --- nullable below - it's hard to say what's the data in edge cases
 
-  @ModelField(() => Date, { nullable: true })
+  @ModelField(type => Date, { nullable: true })
   released?: Date
 
-  @ModelField(() => Int, { nullable: true })
+  @ModelField(type => Int, { nullable: true })
   metascore?: number
 
-  @ModelField(() => Float, { nullable: true })
+  @ModelField(type => Float, { nullable: true })
   imdbRating?: number
 
-  @ModelField(() => Int, { nullable: true })
+  @ModelField(type => Int, { nullable: true })
   imdbVotes?: number
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   rated?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   runtime?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   director?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   writer?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   actors?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   plot?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   awards?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   poster?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   imdbID?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   dvd?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   boxOffice?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   production?: string
 
-  @ModelField(() => String, { nullable: true })
+  @ModelField(type => String, { nullable: true })
   website?: string
 }
