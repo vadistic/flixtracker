@@ -4,6 +4,6 @@ import { ApiProperty } from '@nestjs/swagger'
 @InputType()
 export class CommentIdInput {
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   commentId: string
 }

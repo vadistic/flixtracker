@@ -12,6 +12,6 @@ export class RefreshInput {
 @InputType()
 export class RefreshQueryDto {
   @IsString()
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ required: false })
   token?: string
 }

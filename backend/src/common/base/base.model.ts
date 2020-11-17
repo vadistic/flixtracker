@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger'
 @ObjectType({ isAbstract: true })
 export abstract class BaseModel {
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   id: string
 
   @Field(type => Date, {

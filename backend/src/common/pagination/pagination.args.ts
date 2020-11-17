@@ -26,6 +26,6 @@ export class PaginationArgs {
 
   @IsString()
   @Field(type => ID, { nullable: true })
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ required: false })
   cursor?: string
 }

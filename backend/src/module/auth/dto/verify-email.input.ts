@@ -6,7 +6,7 @@ import { IsEmail, Length } from 'class-validator'
 export class VerifyEmailRequestInput {
   @IsEmail()
   @Field()
-  @ApiProperty({ type: String })
+  @ApiProperty()
   email: string
 }
 
@@ -14,11 +14,11 @@ export class VerifyEmailRequestInput {
 export class VerifyEmailConfirmInput {
   @Length(6, 6)
   @Field()
-  @ApiProperty({ type: String, minLength: 6, maxLength: 6 })
+  @ApiProperty({ minLength: 6, maxLength: 6 })
   code: string
 
   @IsEmail()
   @Field()
-  @ApiProperty({ type: String })
+  @ApiProperty()
   email: string
 }

@@ -16,11 +16,11 @@ export class UserModel extends BaseModel {
   email: string
 
   @Field({ nullable: true })
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ required: false })
   firstname?: string
 
   @Field({ nullable: true })
-  @ApiProperty({ type: String, required: false })
+  @ApiProperty({ required: false })
   lastname?: string
 
   @Field(type => UserRole)

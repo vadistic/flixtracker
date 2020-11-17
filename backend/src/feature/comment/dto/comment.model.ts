@@ -10,14 +10,14 @@ export class CommentModel extends BaseModel {
   @IsNotEmpty()
   @MaxLength(COMMENT.MAX_LENGTH)
   @Field()
-  @ApiProperty({ type: String })
+  @ApiProperty()
   content: string
 
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   movieId: string
 
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   authorId: string
 }

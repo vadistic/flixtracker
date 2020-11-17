@@ -6,11 +6,11 @@ import { IsEmail, MinLength } from 'class-validator'
 export class LoginInput {
   @IsEmail()
   @Field()
-  @ApiProperty({ type: String })
+  @ApiProperty()
   email: string
 
   @MinLength(8)
   @Field()
-  @ApiProperty({ type: String, minLength: 8 })
+  @ApiProperty({ minLength: 8 })
   password: string
 }

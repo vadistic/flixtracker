@@ -4,6 +4,6 @@ import { ApiProperty } from '@nestjs/swagger'
 @InputType()
 export class MovieIdInput {
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   movieId: string
 }

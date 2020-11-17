@@ -52,7 +52,7 @@ export class AuthController {
 
   // TODO: set cookie autmatically
   @Get('/refresh')
-  @ApiOkResponse({ type: String })
+  @ApiOkResponse()
   @ApiCookieAuth('refreshToken')
   refresh(
     @Req() req: Request,

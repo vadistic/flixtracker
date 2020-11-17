@@ -3,6 +3,6 @@ import { ApiProperty } from '@nestjs/swagger'
 
 export class UserIdInput {
   @Field(type => ID)
-  @ApiProperty({ type: String })
+  @ApiProperty()
   userId: string
 }
