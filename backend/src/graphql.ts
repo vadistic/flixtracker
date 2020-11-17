@@ -20,7 +20,7 @@ export class GraphqlOptions implements GqlOptionsFactory {
         dateScalarMode: 'isoDate',
       },
       sortSchema: true,
-      autoSchemaFile: this.config.nest.dev && join(__dirname, 'schema.graphql'),
+      autoSchemaFile: join(__dirname, '../schema.graphql'),
       debug: this.config.graphql.debug,
       playground: this.config.graphql.playgroundEnabled,
       context: ({ req }): Context => ({ req: req as Request }),
