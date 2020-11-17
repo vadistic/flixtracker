@@ -4,7 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static'
 import { join } from 'path'
 
 import { DateTimeScalar } from './common/scalars/date-time.scalar'
-import { DemoModule } from './feature/demo/demo.module'
+import { CommentModule } from './feature/comment/comment.module'
 import { MovieModule } from './feature/movie/movie.module'
 import { UserModule } from './feature/user/user.module'
 import { GraphqlOptions } from './graphql'
@@ -30,8 +30,8 @@ import { PrismaModule } from './module/prisma/prisma.module'
 
     AuthModule,
     UserModule,
-    DemoModule,
     MovieModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [DateTimeScalar],

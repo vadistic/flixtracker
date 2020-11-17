@@ -22,4 +22,6 @@ export const AUTH_ERROR = {
   LOGIN_FAILED: `Server failed to login user`,
   OAUTH_FAILED: `Server failed to socially authenticate user`,
   SIGNUP_FAILED: `Server failed to signup user`,
+
+  UNSUPPRTED_CONTEXT: `Unupported execution context type`,
 } as const

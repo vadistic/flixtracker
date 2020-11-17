@@ -93,7 +93,7 @@ model Comment {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  content   String?
+  content   String
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
   movie     Movie    @relation(fields: [movieId], references: [id])

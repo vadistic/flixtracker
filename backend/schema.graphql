@@ -11,6 +11,37 @@ type Auth {
   user: User!
 }
 
+type Comment {
+  authorId: ID!
+  content: String!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  movieId: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+input CommentCreateInput {
+  content: String!
+  movieId: ID!
+}
+
+input CommentFilterInput {
+  content: String
+  movieId: String
+}
+
+input CommentIdInput {
+  commentId: ID!
+}
+
+input CommentUpdateInput {
+  content: String!
+}
+
 """Date & time scalar type"""
 scalar DateTime
 
@@ -20,19 +51,22 @@ input LoginInput {
 }
 
 type Mutation {
+  createComment(data: CommentCreateInput!): Comment
+  deleteComment(where: CommentIdInput!): Comment
   login(data: LoginInput!): Auth!
   refreshToken(data: RefreshInput!): String!
   resetPasswordConfirm(data: ResetPasswordConfirmInput!): Auth!
   resetPasswordRequest(data: ResetPasswordRequestInput!): String!
   signup(data: SignupInput!): Auth!
+  updateComment(data: CommentUpdateInput!, where: CommentIdInput!): Comment
   updateUser(data: UpdateUserInput!): User!
   verifyEmailConfirm(data: VerifyEmailConfirmInput!): Auth!
   verifyEmailRequest(data: VerifyEmailRequestInput!): String!
 }
 
 type Query {
-  hello(name: String!): String!
-  helloWorld: String!
+  comment(where: CommentIdInput!): Comment
+  comments(where: CommentFilterInput): [Comment!]!
   me: User!
 }
 

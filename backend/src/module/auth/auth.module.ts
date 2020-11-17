@@ -8,9 +8,9 @@ import { MailModule } from '../mail/mail.module'
 import { PrismaModule } from '../prisma/prisma.module'
 
 import { AuthController } from './auth.controller'
-import { GqlAuthGuard } from './auth.guard'
 import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
+import { JwtGuard } from './jwt.guard'
 import { PasswordService } from './password.service'
 import { GoogleStrategy } from './strategy/google.strategy'
 import { JwtStrategy } from './strategy/jwt.strategy'
@@ -32,16 +32,9 @@ import { JwtStrategy } from './strategy/jwt.strategy'
       },
     }),
   ],
-  providers: [
-    AuthService,
-    AuthResolver,
-    JwtStrategy,
-    GoogleStrategy,
-    GqlAuthGuard,
-    PasswordService,
-  ],
+  providers: [AuthService, AuthResolver, JwtStrategy, GoogleStrategy, JwtGuard, PasswordService],
   controllers: [AuthController],
-  exports: [GqlAuthGuard],
+  exports: [JwtGuard],
 })
 export class AuthModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

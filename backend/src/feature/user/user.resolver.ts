@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 
 import { PrismaObject, PrismaPromise } from '../../common/types/utils'
-import { GqlAuthGuard } from '../../module/auth/auth.guard'
+import { JwtGuard } from '../../module/auth/jwt.guard'
 import { CtxUser } from '../../module/auth/user.decorator'
 import { PrismaService } from '../../module/prisma/prisma.service'
 
@@ -11,7 +11,7 @@ import { UserModel } from './dto/user.model'
 import { UserService } from './user.service'
 
 @Resolver(() => UserModel)
-@UseGuards(GqlAuthGuard)
+@UseGuards(JwtGuard)
 export class UserResolver {
   constructor(private readonly userService: UserService, private readonly prisma: PrismaService) {}
 
