@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { ThemeProvider } from '@chakra-ui/react'
+import { Grommet } from 'grommet'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -9,13 +9,12 @@ import { theme } from './theme'
 
 import './index.css'
 
+// hookrouter breaks in strict mode :<
 ReactDOM.render(
-  <React.StrictMode>
+  <Grommet theme={theme}>
     <ApolloProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
+      <App />
     </ApolloProvider>
-  </React.StrictMode>,
+  </Grommet>,
   document.getElementById('root'),
 )

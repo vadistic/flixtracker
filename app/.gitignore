@@ -1,3 +1,6 @@
+# generated
+src/graphql/generated.tsx
+
 # dotenv environment variables file
 # .env
 .env.test

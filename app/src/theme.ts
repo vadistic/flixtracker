@@ -1,3 +1,9 @@
-import { extendTheme } from '@chakra-ui/react'
+import { ThemeType } from 'grommet'
 
-export const theme = extendTheme({})
+export const theme: ThemeType = {
+  global: {
+    font: {
+      family: 'Roboto',
+    },
+  },
+}

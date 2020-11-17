@@ -1,46 +1,68 @@
 {
-  "name": "vite-starter",
-  "version": "0.0.0",
+  "name": "@unknown/app",
+  "description": "TODO",
+  "version": "0.1.0",
+  "author": "Jakub Wadas <vadistic@gmail.com>",
+  "license": "MIT",
+  "private": true,
   "scripts": {
-    "prebuild": "rm -rf dist",
-    "dev": "vite",
-    "build": "vite build",
-    "format": "prettier -w -l src",
+    "prebuild": "yarn clean && yarn codegen",
+    "clean": "rm -rf dist",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "format": "prettier -w -l src public",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint --ext ts,tsx src",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
-    "@chakra-ui/icons": "^1.0.0",
-    "@chakra-ui/react": "^1.0.0",
-    "@emotion/react": "^11.0.0",
-    "@emotion/styled": "^11.0.0",
-    "@pika/react-dom": "^16.13.1",
-    "@pika/react": "^16.13.1",
-    "framer-motion": "^2.9.4",
     "graphql": "^15.4.0",
-    "react-dom": "^16.14.0",
-    "react-router-dom": "^5.2.0",
-    "react": "^16.14.0"
+    "grommet": "^2.15.2",
+    "grommet-icons": "^4.5.0",
+    "hookrouter": "^1.2.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-hook-form": "^6.11.2",
+    "react-scripts": "4.0.0",
+    "styled-components": "^5.2.1",
+    "web-vitals": "^0.2.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.19.1",
     "@graphql-codegen/fragment-matcher": "2.0.0",
-    "@graphql-codegen/typescript-graphql-files-modules": "1.18.0",
+    "@graphql-codegen/typescript": "1.17.11",
     "@graphql-codegen/typescript-operations": "1.17.9",
     "@graphql-codegen/typescript-react-apollo": "2.1.1",
-    "@graphql-codegen/typescript": "1.17.11",
-    "@types/react-dom": "^16.9.9",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.1.2",
+    "@testing-library/user-event": "^12.2.2",
+    "@types/hookrouter": "^2.2.3",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.7",
     "@types/react": "^16.9.56",
+    "@types/react-dom": "^16.9.9",
     "@vadistic/eslint-config": "^0.5.3",
     "@vadistic/prettier-config": "^0.5.2",
+    "@vadistic/tsask": "^0.3.3",
     "eslint": "^7.13.0",
     "jest": "^26.6.3",
     "prettier": "^2.1.2",
-    "ts-jest": "^26.4.4",
-    "typescript": "^4.0.5",
-    "vite-plugin-react": "^3.0.2",
-    "vite": "^1.0.0-rc.9"
+    "typescript": "^4.0.5"
   },
-  "prettier": "@vadistic/prettier-config"
+  "prettier": "@vadistic/prettier-config",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

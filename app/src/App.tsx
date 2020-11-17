@@ -1,15 +1,27 @@
-import { Container, Heading } from '@chakra-ui/react'
+import { Box, Main } from 'grommet'
+import { useRoutes } from 'hookrouter'
 import React from 'react'
 
-import { Header } from './components/header'
-
+import { AppFooter } from './components/layout/footer'
+import { AppHeader } from './components/layout/header'
+import { AppSidebar } from './components/layout/sidebar'
+import { appRoutes, publicRoutes } from './routes'
 export const App: React.FC = () => {
+  const authenticated = false
+
+  const route = useRoutes(authenticated ? appRoutes : publicRoutes)
+
   return (
-    <div className="app">
-      <Header />
-      <Container as="main">
-        <Heading>Hello</Heading>
-      </Container>
-    </div>
+    <Box className="app" height={{ min: '100vh' }} direction="column" justify="stretch">
+      <AppHeader />
+
+      <Box direction="row" height={{ min: '100%' }} flex="grow">
+        {authenticated && <AppSidebar />}
+
+        <Main pad="medium">{route}</Main>
+      </Box>
+
+      <AppFooter />
+    </Box>
   )
 }

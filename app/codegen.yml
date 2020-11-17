@@ -1,11 +1,17 @@
 overwrite: true
-schema: "../backend/src/schema.graphql"
-documents: "src/**/*.graphql"
+schema:
+  - '../backend/src/schema.graphql'
+documents:
+  - 'src/**/*.{graphql,tsx,ts}'
 generates:
-  src/generated/graphql.tsx:
+  src/graphql/generated.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
-      - "typescript-graphql-files-modules"
-      - "fragment-matcher"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - 'fragment-matcher'
+    config:
+      dedupeOperationSuffix: true
+    hooks:
+      afterAllFileWrite:
+        - prettier -w
