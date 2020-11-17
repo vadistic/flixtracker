@@ -1,7 +1,7 @@
 {
   "name": "@flixtracker/backend",
   "version": "0.1.0",
-  "description": "TODO",
+  "description": "Movie tracking app backend",
   "author": "Jakub Wadas <vadistic.gmail.com>",
   "license": "MIT",
   "repository": "https://github.com/vadistic/flixtracker.git",

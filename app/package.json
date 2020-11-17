@@ -1,6 +1,6 @@
 {
   "name": "@flixtracker/app",
-  "description": "TODO",
+  "description": "Movie tracking app frontend",
   "version": "0.1.0",
   "author": "Jakub Wadas <vadistic@gmail.com>",
   "license": "MIT",
