@@ -1,8 +1,12 @@
+import { Chance } from 'chance'
+
 import { MovieService } from '../src/feature/movie/movie.service'
 import { PrismaService } from '../src/module/prisma/prisma.service'
 
+const chance = Chance()
+
 export const seed = async (prisma: PrismaService, movieService: MovieService) => {
-  await prisma.user.create({
+  const u1 = await prisma.user.create({
     data: {
       email: 'user@example.com',
       firstname: 'Lisa',
@@ -14,7 +18,7 @@ export const seed = async (prisma: PrismaService, movieService: MovieService) =>
     },
   })
 
-  await prisma.user.create({
+  const u2 = await prisma.user.create({
     data: {
       email: 'bart@simpson.com',
       firstname: 'Bart',
@@ -26,7 +30,39 @@ export const seed = async (prisma: PrismaService, movieService: MovieService) =>
     },
   })
 
-  await movieService.createMovie({ title: 'Kill bill' })
-  await movieService.createMovie({ title: 'The Revenant' })
-  await movieService.createMovie({ title: 'Kingdom of Heaven' })
+  const m1 = await movieService.createMovie({ title: 'Kill bill' })
+  const m2 = await movieService.createMovie({ title: 'The Revenant' })
+  const m3 = await movieService.createMovie({ title: 'Kingdom of Heaven' })
+
+  await prisma.comment.create({
+    data: {
+      movie: { connect: { id: m1.id } },
+      author: { connect: { id: u1.id } },
+      content: chance.paragraph(),
+    },
+  })
+
+  await prisma.comment.create({
+    data: {
+      movie: { connect: { id: m1.id } },
+      author: { connect: { id: u2.id } },
+      content: chance.paragraph(),
+    },
+  })
+
+  await prisma.comment.create({
+    data: {
+      movie: { connect: { id: m2.id } },
+      author: { connect: { id: u1.id } },
+      content: chance.paragraph(),
+    },
+  })
+
+  await prisma.comment.create({
+    data: {
+      movie: { connect: { id: m3.id } },
+      author: { connect: { id: u2.id } },
+      content: chance.paragraph(),
+    },
+  })
 }
