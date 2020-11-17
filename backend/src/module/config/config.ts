@@ -52,6 +52,7 @@ export class SwaggerConfig {
 
 export class GraphqlConfig {
   playgroundEnabled: boolean = true
+  introspectionEnabled: boolean = true
   debug: boolean = IS_DEV
 }
 

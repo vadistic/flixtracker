@@ -23,6 +23,8 @@ export class GraphqlOptions implements GqlOptionsFactory {
       autoSchemaFile: join(__dirname, '../schema.graphql'),
       debug: this.config.graphql.debug,
       playground: this.config.graphql.playgroundEnabled,
+      introspection: this.config.graphql.introspectionEnabled,
+      path: '/graphql',
       context: ({ req }): Context => ({ req: req as Request }),
     }
   }
