@@ -9,20 +9,13 @@ async function main() {
 
   const user1 = await prisma.user.create({
     data: {
-      email: 'lisa@simpson.com',
+      email: 'user@example.com',
       firstname: 'Lisa',
       lastname: 'Simpson',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
       role: 'USER',
       auth: 'LOCAL',
       status: 'CONFIRMED',
-      posts: {
-        create: {
-          title: 'Join us for Prisma Day 2019 in Berlin',
-          content: 'https://www.prisma.io/day/',
-          published: true,
-        },
-      },
     },
   })
   const user2 = await prisma.user.create({
@@ -34,20 +27,6 @@ async function main() {
       auth: 'LOCAL',
       status: 'CONFIRMED',
       password: '$2b$10$EpRnTzVlqHNP0.fUbXUwSOyuiXe/QLSUG6xNekdHgTGmrpHEfIoxm', // secret42
-      posts: {
-        create: [
-          {
-            title: 'Subscribe to GraphQL Weekly for community news',
-            content: 'https://graphqlweekly.com/',
-            published: true,
-          },
-          {
-            title: 'Follow Prisma on Twitter',
-            content: 'https://twitter.com/prisma',
-            published: false,
-          },
-        ],
-      },
     },
   })
 

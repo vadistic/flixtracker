@@ -4,11 +4,7 @@ import { ArgsType } from '@nestjs/graphql'
 export class PaginationArgs {
   skip?: number
 
-  after?: string
+  take?: number
 
-  before?: string
-
-  first?: number
-
-  last?: number
+  cursor?: string
 }

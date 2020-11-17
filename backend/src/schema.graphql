@@ -30,68 +30,15 @@ type Mutation {
   verifyEmailRequest(data: VerifyEmailRequestInput!): String!
 }
 
-"""
-Possible directions in which to order a list of items when provided an `orderBy` argument.
-"""
-enum OrderDirection {
-  asc
-  desc
-}
-
-type PageInfo {
-  endCursor: String
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-}
-
-type Post {
-  author: User!
-  content: String!
-
-  """Identifies the date and time when the object was created."""
-  createdAt: DateTime!
-  id: ID!
-  published: Boolean!
-  title: String!
-
-  """Identifies the date and time when the object was last updated."""
-  updatedAt: DateTime!
-}
-
-type PostConnection {
-  edges: [PostModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type PostModelEdge {
-  cursor: String!
-  node: Post!
-}
-
-input PostOrder {
-  direction: OrderDirection!
-  field: PostOrderField!
-}
-
-"""Properties by which post connections can be ordered."""
-enum PostOrderField {
-  content
-  createdAt
-  id
-  published
-  title
-  updatedAt
-}
-
 type Query {
   hello(name: String!): String!
   helloWorld: String!
   me: User!
-  post(postId: String!): Post!
-  postConnection(after: String, before: String, first: Int, last: Int, orderBy: PostOrder, query: String, skip: Int): PostConnection!
-  userPostCollection(userId: String!): [Post!]!
+}
+
+type Rating {
+  source: String!
+  value: String!
 }
 
 input ResetPasswordConfirmInput {
@@ -123,7 +70,6 @@ type User {
   firstname: String
   id: ID!
   lastname: String
-  posts: [Post!]!
   role: UserRole!
 
   """Identifies the date and time when the object was last updated."""

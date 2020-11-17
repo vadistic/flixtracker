@@ -27,9 +27,9 @@ export class ConfigurationModule {
       strategy: 'exposeAll',
     })
 
-    const err = validateSync(clz)
+    const err = validateSync(clz, { skipMissingProperties: false })
 
-    if (err.length > 0) throw new InternalServerErrorException(err[0], 'invalid config')
+    if (err.length > 0) throw new InternalServerErrorException(err[0].toString())
 
     return {
       module: ConfigurationModule,

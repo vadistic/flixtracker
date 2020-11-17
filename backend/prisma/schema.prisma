@@ -17,34 +17,6 @@ enum StrategyType {
   GOOGLE
 }
 
-model User {
-  id           String       @id @default(cuid())
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  email        String       @unique
-  auth         StrategyType
-  status       UserStatus
-  firstname    String?
-  lastname     String?
-  posts        Post[]
-  role         UserRole
-  // internal
-  emailCode    String?
-  passwordCode String?
-  password     String?
-}
-
-model Post {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  published Boolean
-  title     String
-  content   String?
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  String?
-}
-
 enum UserRole {
   ADMIN
   USER
@@ -54,4 +26,89 @@ enum UserStatus {
   CONFIRMED
   UNCONFIRMED
   BANNED
+}
+
+model User {
+  id           String       @id @default(cuid())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  email        String       @unique
+  auth         StrategyType
+  status       UserStatus
+  firstname    String?
+  lastname     String?
+  role         UserRole
+  // internal
+  emailCode    String?
+  passwordCode String?
+  password     String?
+  // relations
+  movies       Movie[]
+  comments     Comment[]
+}
+
+enum MovieType {
+  MOVIE
+  SERIES
+  EPISODE
+}
+
+model Movie {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  //
+  title      String
+  imdbID     String    @unique
+  year       Int
+  type       MovieType
+  ratings    Json
+  // arrays
+  language   String[]
+  country    String[]
+  genre      String[]
+  // nulalble
+  poster     String?
+  rated      String?
+  released   DateTime?
+  runtime    String?
+  director   String?
+  writer     String?
+  actors     String?
+  plot       String?
+  awards     String?
+  metascore  Int
+  imdbRating Float
+  imdbVotes  Int
+  dvd        String?
+  boxOffice  String?
+  production String?
+  website    String?
+  // relations
+  users      User[]
+  comments   Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String?
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   String
+}
+
+// unused (yet)
+
+model MovieAbstract {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String
+  imdbID    String    @unique
+  year      Int
+  type      MovieType
+  poster    String?
 }

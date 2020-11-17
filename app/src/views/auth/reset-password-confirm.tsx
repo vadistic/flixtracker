@@ -44,7 +44,6 @@ export const ResetPasswordConfirmView: React.FC = () => {
   })
 
   const handleSubmit = form.handleSubmit(async ({ confirmPassword, ...rest }) => {
-    console.log('resetPasswordConfirm')
     await resetPasswordConfirm({ variables: { data: rest } })
   })
 

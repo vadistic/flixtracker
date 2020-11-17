@@ -11,22 +11,71 @@ Table User {
   status UserStatus [not null]
   firstname String
   lastname String
-  posts Post
   role UserRole [not null]
   emailCode String
   passwordCode String
   password String
+  movies Movie
+  comments Comment
 }
 
-Table Post {
+Table Movie {
   id String [pk]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
-  published Boolean [not null]
   title String [not null]
+  imdbID String [unique, not null]
+  year Int [not null]
+  type MovieType [not null]
+  ratings Json [not null]
+  language String
+  country String
+  genre String
+  poster String
+  rated String
+  released DateTime
+  runtime String
+  director String
+  writer String
+  actors String
+  plot String
+  awards String
+  metascore Int [not null]
+  imdbRating Float [not null]
+  imdbVotes Int [not null]
+  dvd String
+  boxOffice String
+  production String
+  website String
+  users User
+  comments Comment
+}
+
+Table Comment {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
   content String
-  author User
-  authorId String
+  author User [not null]
+  authorId String [not null]
+  movie Movie [not null]
+  movieId String [not null]
+}
+
+Table MovieAbstract {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  title String [not null]
+  imdbID String [unique, not null]
+  year Int [not null]
+  type MovieType [not null]
+  poster String
+}
+
+Table MovieToUser {
+  moviesId String [ref: > Movie.id]
+  usersId String [ref: > User.id]
 }
 
 Enum StrategyType {
@@ -45,4 +94,12 @@ Enum UserStatus {
   BANNED
 }
 
-Ref: Post.authorId > User.id
+Enum MovieType {
+  MOVIE
+  SERIES
+  EPISODE
+}
+
+Ref: Comment.authorId > User.id
+
+Ref: Comment.movieId > Movie.id

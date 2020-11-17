@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Type } from 'class-transformer'
-import { IsOptional, IsPort, IsUrl } from 'class-validator'
+import { IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator'
 
 import { toBool, toInt } from './config.utils'
 
 const IS_DEV = !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
 
 export class NestConfig {
-  @IsUrl()
+  dev: boolean = IS_DEV
+
+  @IsString()
   url: string = process.env.URL ?? `http://localhost:${process.env.PORT ?? 3000}`
 
-  @IsPort()
+  @IsNumber()
   port: number = toInt(process.env.PORT) ?? 3000
 
   corsEnabled: boolean = true
@@ -36,7 +38,7 @@ export class DatabaseConfig {
   @IsOptional()
   schema: string = process.env.DB_SCHEMA ?? 'public'
 
-  @IsPort()
+  @IsNumber()
   port: number = toInt(process.env.DB_PORT) ?? 5432
 }
 
@@ -63,30 +65,48 @@ export class AuthConfig {
 
   jwtSecret: string = process.env.JWT_SECRET ?? 'mySecret'
 
+  @IsString()
   googleClient: string = process.env.OAUTH_GOOGLE_CLIENT!
+
+  @IsString()
   googleSecret: string = process.env.OAUTH_GOOGLE_SECRET!
+}
+
+export class OmdbConfig {
+  @IsString()
+  apikey: string = process.env.OMDB_KEY!
 }
 
 // ────────────────────────────────────────────────────────────────────────────────
 
 export class Config {
+  @ValidateNested()
   @Type(() => NestConfig)
   nest: NestConfig
 
+  @ValidateNested()
   @Type(() => SmtpConfig)
   smtp: SmtpConfig
 
+  @ValidateNested()
   @Type(() => SwaggerConfig)
   swagger: SwaggerConfig
 
+  @ValidateNested()
   @Type(() => GraphqlConfig)
   graphql: GraphqlConfig
 
+  @ValidateNested()
   @Type(() => AuthConfig)
   auth: AuthConfig
 
+  @ValidateNested()
   @Type(() => DatabaseConfig)
   database: DatabaseConfig
+
+  @ValidateNested()
+  @Type(() => OmdbConfig)
+  omdb: OmdbConfig
 }
 
 export const configuration = (): Config => ({
@@ -96,4 +116,5 @@ export const configuration = (): Config => ({
   graphql: new GraphqlConfig(),
   auth: new AuthConfig(),
   database: new DatabaseConfig(),
+  omdb: new OmdbConfig(),
 })

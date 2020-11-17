@@ -30,7 +30,6 @@ export const VerifyEmailRequestView: React.FC = () => {
   })
 
   const handleSubmit = form.handleSubmit(async data => {
-    console.log('resetPasswordConfirm')
     await resetPasswordConfirm({ variables: { data } })
   })
 

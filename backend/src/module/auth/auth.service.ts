@@ -121,7 +121,6 @@ export class AuthService {
 
         return newUser
       } catch (e) {
-        console.log(e)
         throw new InternalServerErrorException(AUTH_ERROR.OAUTH_FAILED)
       }
     }
