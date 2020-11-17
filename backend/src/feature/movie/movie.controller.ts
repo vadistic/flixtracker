@@ -1,9 +1,7 @@
 import { Body, Controller, Get, NotFoundException, Query, Post } from '@nestjs/common'
-import { ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger'
+import { ApiBody, ApiOkResponse } from '@nestjs/swagger'
 
-import { NotFoundResponse } from '../../common/responses/not-found'
-
-import { GetMoviesQueryDto, PostMovieDataDto } from './dto/movie.dto'
+import { MoviesFilterDto, MovieCreateDto } from './dto/movie.dto'
 import { MovieModel } from './dto/movie.model'
 import { MovieService } from './movie.service'
 
@@ -16,18 +14,16 @@ export class MovieController {
     type: MovieModel,
     isArray: true,
   })
-  async getMovies(@Query() query: GetMoviesQueryDto) {
+  async getMovies(@Query() query: MoviesFilterDto) {
     return this.movieService.getMovies(query)
   }
 
   @Post()
+  @ApiBody({ type: MovieCreateDto })
   @ApiOkResponse({
     type: MovieModel,
   })
-  @ApiNotFoundResponse({
-    type: NotFoundResponse,
-  })
-  async postMovie(@Body() data: PostMovieDataDto) {
+  async postMovie(@Body() data: MovieCreateDto) {
     const movie = await this.movieService.postMovie(data)
 
     if (!movie) {

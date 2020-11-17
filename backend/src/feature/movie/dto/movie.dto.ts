@@ -1,19 +1,18 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger'
+import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger'
 import { Movie } from '@prisma/client'
 import { IsString, MaxLength, MinLength } from 'class-validator'
 
 import { PaginationArgs } from '../../../common/pagination/pagination.args'
 
-import { MovieInput } from './movie.input'
+import { MovieModel } from './movie.model'
 
 export type MovieDto = Omit<Movie, 'id' | 'createdAt' | 'updatedAt' | 'comments' | 'users'>
 
-export class GetMoviesQueryDto extends PaginationArgs {
+export class MoviesFilterDto extends PaginationArgs {
   @MaxLength(255)
   @MinLength(2)
   @IsString()
   @ApiProperty({
-    type: String,
     maxLength: 255,
     minLength: 2,
     example: 'Kill Bill',
@@ -22,4 +21,6 @@ export class GetMoviesQueryDto extends PaginationArgs {
   title?: string
 }
 
-export class PostMovieDataDto extends MovieInput {}
+export class MovieCreateDto extends PartialType(
+  OmitType(MovieModel, ['id', 'createdAt', 'updatedAt']),
+) {}

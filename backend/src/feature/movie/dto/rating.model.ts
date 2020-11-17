@@ -1,7 +1,13 @@
-import { ObjectType } from '@nestjs/graphql'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { ApiProperty } from '@nestjs/swagger'
 
 @ObjectType('Rating')
 export class RatingModel {
-  source!: string
-  value!: string
+  @Field()
+  @ApiProperty()
+  source: string
+
+  @Field()
+  @ApiProperty()
+  value: string
 }
