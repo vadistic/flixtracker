@@ -8,5 +8,11 @@
   "private": true,
   "engines": {
     "node": "14.x||12.x"
+  },
+  "scripts": {
+    "build:app": "yarn --cwd app install && yarn --cwd app build",
+    "build:backend": "yarn --cwd backend install && yarn --cwd backend build",
+    "build": "yarn build:app && yarn build:backend",
+    "start": "node ./backend/dist/main"
   }
 }

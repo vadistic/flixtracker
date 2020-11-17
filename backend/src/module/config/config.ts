@@ -53,8 +53,6 @@ export class SwaggerConfig {
 export class GraphqlConfig {
   playgroundEnabled: boolean = true
   debug: boolean = IS_DEV
-  schemaDestination: string = './src/schema.graphql'
-  sortSchema: boolean = true
 }
 
 export class AuthConfig {

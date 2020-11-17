@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql'
 import { Request } from 'express'
+import { join } from 'path'
 
 import { Config } from './module/config/config'
 
@@ -18,8 +19,8 @@ export class GraphqlOptions implements GqlOptionsFactory {
         numberScalarMode: 'integer',
         dateScalarMode: 'isoDate',
       },
-      sortSchema: this.config.graphql.sortSchema,
-      autoSchemaFile: this.config.graphql.schemaDestination,
+      sortSchema: true,
+      autoSchemaFile: this.config.nest.dev && join(__dirname, 'schema.graphql'),
       debug: this.config.graphql.debug,
       playground: this.config.graphql.playgroundEnabled,
       context: ({ req }): Context => ({ req: req as Request }),
