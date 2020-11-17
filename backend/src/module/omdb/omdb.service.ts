@@ -1,4 +1,4 @@
-import { Injectable, ServiceUnavailableException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import axios from 'axios'
 import qs from 'querystring'
 
@@ -6,6 +6,7 @@ import { RatingModel } from '../../feature/movie/dto/rating.model'
 import { Config } from '../config/config'
 
 import { OmdbSearchManyDto, OmdbSearchOneDto } from './omdb.dto'
+import { OMDB_ERROR } from './omdb.errors'
 import { OmdbMovie, OmdbMoviesList, OmdbRating, OmdbResponse } from './omdb.interfaces'
 import { toArray, toDate, toFloat, toInt, toMovieType, toNullable } from './omdb.utils'
 
@@ -47,7 +48,7 @@ export class OmdbService {
     }
 
     if (res.status !== 200) {
-      throw new ServiceUnavailableException('OMDB API failed')
+      throw OMDB_ERROR.UNAVALIBLE()
     }
 
     return undefined
@@ -70,7 +71,7 @@ export class OmdbService {
     }
 
     if (res.status !== 200) {
-      throw new ServiceUnavailableException('OMDB API failed')
+      throw OMDB_ERROR.UNAVALIBLE()
     }
 
     return undefined
