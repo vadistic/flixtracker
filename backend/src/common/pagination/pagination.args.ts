@@ -1,31 +1,19 @@
-import { ArgsType, Field, ID, Int } from '@nestjs/graphql'
-import { ApiProperty } from '@nestjs/swagger'
-import { Transform } from 'class-transformer'
-import { IsInt, IsString, Max, Min } from 'class-validator'
+import { ArgsType, Int } from '@nestjs/graphql'
+import { IsString, Max, Min } from 'class-validator'
+
+import { ModelField } from '../base/field.decorator'
 
 @ArgsType()
 export class PaginationArgs {
-  @IsInt()
-  @Transform(Number)
-  @Field(type => Int, { nullable: true })
-  @ApiProperty({ type: Number, required: false })
+  @ModelField(() => Int, { nullable: true })
   skip?: number
 
   @Min(1)
   @Max(100)
-  @IsInt()
-  @Transform(Number)
-  @Field(type => Int, { nullable: true })
-  @ApiProperty({
-    type: Number,
-    required: false,
-    minimum: 1,
-    maximum: 100,
-  })
+  @ModelField(() => Int, { nullable: true })
   take?: number
 
   @IsString()
-  @Field(type => ID, { nullable: true })
-  @ApiProperty({ required: false })
+  @ModelField(() => String, { nullable: true })
   cursor?: string
 }
