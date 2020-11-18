@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Query, Post, Param, Patch, Delete } from '@nestjs/common'
-import { ApiBody, ApiOkResponse } from '@nestjs/swagger'
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger'
 
 import { MovieCreateDto } from './dto/movie-create.dto'
 import { MoviesFilterDto } from './dto/movie-filter.dto'
@@ -9,6 +9,7 @@ import { MovieModel } from './dto/movie.model'
 import { MovieService } from './movie.service'
 
 @Controller('/api/movies')
+@ApiTags('movies')
 export class MovieController {
   constructor(readonly movieService: MovieService) {}
 

@@ -47,9 +47,9 @@ export class DatabaseConfig {
 
 export class SwaggerConfig {
   enabled: boolean = true
-  title: string = 'NestJS API'
-  description: string = 'The nestjs API description'
-  version: string = '1.0.0'
+  title: string = 'Flixtracker API'
+  description: string = 'The FlixTracker REST API documentation'
+  version: string = '0.1.0'
   path: string = 'api'
 }
 

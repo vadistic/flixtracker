@@ -8,10 +8,9 @@ export function setupSwagger(config: Config, app: INestApplication) {
 
   if (config.swagger.enabled) {
     const options = new DocumentBuilder()
-      .setTitle(config.swagger.title || 'FlixTracker REST API')
+      .setTitle(config.swagger.title)
       .setDescription(config.swagger.description)
       .setVersion(config.swagger.version || '1.0.0')
-      .addTag('Endpoints')
       .setContact('Jakub Wadas', 'https://vadistic.netlify.app', 'vadistic@gmail.com')
       .addServer(`${url}://`)
       .build()

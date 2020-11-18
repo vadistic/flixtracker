@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Req, Res, UnauthorizedException, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
-import { ApiCookieAuth, ApiOkResponse } from '@nestjs/swagger'
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger'
 import { Request, Response } from 'express'
 import ms from 'ms'
 
@@ -15,6 +15,7 @@ import { ResetPasswordConfirmInput } from './dto/reset-password.input'
 import { VerifyEmailConfirmInput } from './dto/verify-email.input'
 
 @Controller('/auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(readonly authService: AuthService, readonly config: Config) {}
 
@@ -50,23 +51,26 @@ export class AuthController {
     return res.redirect(APP_ROUTES.HOME)
   }
 
-  // TODO: set cookie autmatically
   @Get('/refresh')
-  @ApiOkResponse()
-  @ApiCookieAuth('refreshToken')
+  @ApiOkResponse({ type: String })
   refresh(
     @Req() req: Request,
     @Res() res: Response,
     @Query() { token: queryToken }: RefreshQueryDto,
   ): string {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    const token = queryToken ?? req?.cookies?.refreshToken
+    const refresToken = queryToken ?? req?.cookies?.refreshToken
 
-    if (!token) {
+    if (!refresToken) {
       throw new UnauthorizedException(AUTH_ERROR.MISSING_REFRESH_TOKEN)
     }
+    const accessToken = this.authService.refreshToken(refresToken)
 
-    return this.authService.refreshToken(token)
+    res.cookie('accessToken', accessToken, {
+      maxAge: ms(this.config.auth.expiresIn),
+    })
+
+    return accessToken
   }
 
   @Get('/verify')
