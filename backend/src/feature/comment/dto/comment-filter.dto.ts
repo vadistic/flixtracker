@@ -3,9 +3,9 @@ import { IntersectionType } from '@nestjs/swagger'
 import { ModelField } from '../../../common/base/field.decorator'
 import { PaginationArgs } from '../../../common/pagination/pagination.args'
 
-import { CommentOrderInput } from './comment-order.input'
+import { CommentOrderArgs } from './comment.args'
 
-export class CommentFilterDto extends IntersectionType(CommentOrderInput, PaginationArgs) {
+export class CommentFilterDto extends IntersectionType(CommentOrderArgs, PaginationArgs) {
   @ModelField(type => String, { nullable: true })
   content?: string
 }

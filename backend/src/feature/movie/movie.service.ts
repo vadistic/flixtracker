@@ -12,9 +12,9 @@ import { MovieCreateDto } from './dto/movie-create.dto'
 import { MoviesFilterDto } from './dto/movie-filter.dto'
 import { MoviesFilterInput } from './dto/movie-filter.input'
 import { MovieIdInput } from './dto/movie-id.input'
-import { MovieOrderBy } from './dto/movie-order.input'
 import { MovieUpdateDto } from './dto/movie-update.dto'
 import { MovieUpdateInput } from './dto/movie-update.input'
+import { MovieOrderBy } from './dto/movie.args'
 import { MOVIE_ERROR } from './movie.error'
 
 @Injectable()
@@ -26,18 +26,18 @@ export class MovieService {
     take,
     skip,
     cursor,
-    direction = OrderDirection.asc,
-    orderBy = MovieOrderBy.createdAt,
+    direction,
+    orderBy,
     ...where
   }: MoviesFilterDto & MoviesFilterInput) {
     return await this.prisma.movie.findMany({
       skip,
       take,
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { [orderBy]: direction },
+      orderBy: { [orderBy ?? MovieOrderBy.createdAt]: direction ?? OrderDirection.asc },
       where: {
         ...where,
-        title: { contains: where.title },
+        title: where.title ? { contains: where.title } : undefined,
       },
     })
   }

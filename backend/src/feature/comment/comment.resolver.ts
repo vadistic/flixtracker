@@ -3,7 +3,6 @@ import { Query, Args, Mutation, ResolveField, Parent } from '@nestjs/graphql'
 import { Resolver } from '@nestjs/graphql'
 import { Comment } from '@prisma/client'
 
-import { PaginationArgs } from '../../common/pagination/pagination.args'
 import { JwtGuard } from '../../module/auth/jwt.guard'
 import { CtxUser } from '../../module/auth/user.decorator'
 import { PrismaService } from '../../module/prisma/prisma.service'
@@ -11,10 +10,9 @@ import { MovieModel } from '../movie/dto/movie.model'
 
 import { CommentService } from './comment.service'
 import { CommentCreateInput } from './dto/comment-create.input'
-import { CommentFilterInput } from './dto/comment-filter.input'
 import { CommentIdInput } from './dto/comment-id.input'
-import { CommentOrderInput } from './dto/comment-order.input'
 import { CommentUpdateInput } from './dto/comment-update.input'
+import { CommentQueryArgs } from './dto/comment.args'
 import { CommentModel } from './dto/comment.model'
 
 @Resolver(() => CommentModel)
@@ -22,12 +20,8 @@ export class CommentResolver {
   constructor(readonly commentService: CommentService, readonly prisma: PrismaService) {}
 
   @Query(returns => [CommentModel])
-  async comments(
-    @Args() pag: PaginationArgs,
-    @Args('where', { nullable: true }) where?: CommentFilterInput,
-    @Args('order', { nullable: true }) order?: CommentOrderInput,
-  ) {
-    return this.commentService.findManyComments({ ...where, ...order, ...pag })
+  async comments(@Args() { where, ...rest }: CommentQueryArgs) {
+    return this.commentService.findManyComments({ ...where, ...rest })
   }
 
   @Query(returns => CommentModel, { nullable: true })

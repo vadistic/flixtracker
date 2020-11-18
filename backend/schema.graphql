@@ -31,8 +31,9 @@ input CommentCreateInput {
 }
 
 input CommentFilterInput {
+  authorId: ID
   content: String
-  movieId: String
+  movieId: ID
 }
 
 input CommentIdInput {
@@ -41,11 +42,6 @@ input CommentIdInput {
 
 enum CommentOrderBy {
   createdAt
-}
-
-input CommentOrderInput {
-  direction: OrderDirection
-  orderBy: CommentOrderBy
 }
 
 input CommentUpdateInput {
@@ -134,11 +130,6 @@ enum MovieOrderBy {
   year
 }
 
-input MovieOrderInput {
-  direction: OrderDirection
-  orderBy: MovieOrderBy
-}
-
 input MoviesFilterInput {
   imdbID: String
   title: String
@@ -204,10 +195,10 @@ enum OrderDirection {
 
 type Query {
   comment(where: CommentIdInput!): Comment
-  comments(cursor: String, order: CommentOrderInput, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
+  comments(cursor: String, direction: OrderDirection, orderBy: CommentOrderBy, skip: Int, take: Int, where: CommentFilterInput): [Comment!]!
   me: User!
   movie(where: MovieIdInput!): Movie
-  movies(cursor: String, order: MovieOrderInput, skip: Int, take: Int, where: MoviesFilterInput): [Movie!]!
+  movies(cursor: String, direction: OrderDirection, orderBy: MovieOrderBy, skip: Int, take: Int, where: MoviesFilterInput): [Movie!]!
 }
 
 type Rating {

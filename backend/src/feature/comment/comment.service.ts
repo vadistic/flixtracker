@@ -13,9 +13,9 @@ import { CommentCreateInput } from './dto/comment-create.input'
 import { CommentFilterDto } from './dto/comment-filter.dto'
 import { CommentFilterInput } from './dto/comment-filter.input'
 import { CommentIdInput } from './dto/comment-id.input'
-import { CommentOrderBy } from './dto/comment-order.input'
 import { CommentUpdateDto } from './dto/comment-update.dto'
 import { CommentUpdateInput } from './dto/comment-update.input'
+import { CommentOrderBy } from './dto/comment.args'
 
 @Injectable()
 @UseFilters(PrismaExceptionFilter)
@@ -25,8 +25,8 @@ export class CommentService {
   async findManyComments({
     movieId,
     cursor,
-    direction = OrderDirection.desc,
-    orderBy = CommentOrderBy.createdAt,
+    direction,
+    orderBy,
     skip,
     take,
     content,
@@ -37,7 +37,7 @@ export class CommentService {
         content: { contains: content },
       },
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { [orderBy]: direction },
+      orderBy: { [orderBy ?? CommentOrderBy.createdAt]: direction ?? OrderDirection.desc },
       skip,
       take,
     })
