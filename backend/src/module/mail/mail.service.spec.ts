@@ -19,18 +19,20 @@ describe('MailService', () => {
 
   describe('works', () => {
     it('should send "welcome mail"', async () => {
-      const info = await service.sendMail(
-        MailType.OAUTH_SIGNUP,
-        {
+      const info = await service.sendMail({
+        template: MailType.LOCAL_SIGNUP,
+        props: {
+          code: '123123',
+          link: 'http://example.com',
+        },
+        retries: 0,
+        user: {
           firstname: 'Jakub',
           email: 'vadistic@gmail.com',
         } as any,
-        {},
-      )
+      })
 
       expect(info).toBeDefined()
-      expect(info.accepted.length).toBe(1)
-      expect(info.rejectd.length).toBe(0)
     })
   })
 })

@@ -1,5 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
+import { ConfigModule } from '../config/config.module'
+
 import { OmdbModule } from './omdb.module'
 import { OmdbService } from './omdb.service'
 
@@ -8,7 +10,7 @@ describe('OmdbService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [OmdbModule],
+      imports: [OmdbModule, ConfigModule],
     }).compile()
 
     service = module.get<OmdbService>(OmdbService)

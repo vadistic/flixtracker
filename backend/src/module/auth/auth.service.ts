@@ -56,7 +56,7 @@ export class AuthService {
         },
       })
 
-      await this.mailService.sendMail(MailType.LOCAL_SIGNUP, user, {
+      this.mailService.scheduleMail(MailType.LOCAL_SIGNUP, user, {
         code: code,
         link: this.config.nest.url + '/auth/confirm',
       })
@@ -117,7 +117,7 @@ export class AuthService {
           },
         })
 
-        await this.mailService.sendMail(MailType.OAUTH_SIGNUP, newUser, {})
+        this.mailService.scheduleMail(MailType.OAUTH_SIGNUP, newUser, {})
 
         return newUser
       } catch (e) {
@@ -164,7 +164,7 @@ export class AuthService {
       where: { id: user.id },
     })
 
-    await this.mailService.sendMail(MailType.VERIFY_RESEND, user, {
+    this.mailService.scheduleMail(MailType.VERIFY_RESEND, user, {
       code: code,
       link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
     })
@@ -226,7 +226,7 @@ export class AuthService {
       where: { id: user.id },
     })
 
-    await this.mailService.sendMail(MailType.RESET_PASSWORD, user, {
+    this.mailService.scheduleMail(MailType.RESET_PASSWORD, user, {
       code: code,
       link: this.config.nest.url + '/auth/reset?' + qs.stringify({ code, email: user.email }),
     })

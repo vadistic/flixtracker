@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common'
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
 
-import { PrismaObject, PrismaPromise } from '../../common/types/utils'
+import { PrismaObject, PrismaPromise } from '../../common/utils/types'
 import { JwtGuard } from '../../module/auth/jwt.guard'
 import { CtxUser } from '../../module/auth/user.decorator'
 import { PrismaService } from '../../module/prisma/prisma.service'

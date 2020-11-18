@@ -20,6 +20,7 @@ export class NestConfig {
 }
 
 export class SmtpConfig {
+  @IsNumber()
   port: number = toInt(process.env.SMTP_PORT) ?? 1025
   host: string = process.env.SMTP_HOST ?? 'localhost'
   username: string = process.env.SMTP_USERNAME ?? 'localhost'
@@ -27,6 +28,8 @@ export class SmtpConfig {
   tls: boolean = toBool(process.env.SMTP_TLS) ?? false
   sender: string = process.env.SMTP_SENDER ?? 'NestJS App'
   email: string = process.env.SMTP_EMAIL ?? 'mail@example.com'
+
+  retries: number = 5
 }
 
 export class DatabaseConfig {

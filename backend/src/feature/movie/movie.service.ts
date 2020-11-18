@@ -2,7 +2,7 @@ import { Injectable, UseFilters } from '@nestjs/common'
 import { Movie } from '@prisma/client'
 
 import { OrderDirection } from '../../common/order/order-direction'
-import { mergeDefined } from '../../common/types/empty-keys'
+import { mergeDefined } from '../../common/utils/nullability'
 import { OmdbResultType } from '../../module/omdb/omdb.interfaces'
 import { OmdbService } from '../../module/omdb/omdb.service'
 import { PrismaExceptionFilter } from '../../module/prisma/prisma-exception.filter'
