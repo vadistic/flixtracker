@@ -19,9 +19,9 @@ export class MovieResolver {
 
   @Query(returns => [MovieModel])
   async movies(
-    @Args('where', { nullable: true }) where: MoviesFilterInput = {},
-    @Args('order') order: MovieOrderInput,
     @Args() pag: PaginationArgs,
+    @Args('where', { nullable: true }) where?: MoviesFilterInput,
+    @Args('order', { nullable: true }) order?: MovieOrderInput,
   ) {
     return this.movieService.findManyMovies({ ...where, ...order, ...pag })
   }

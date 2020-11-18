@@ -23,9 +23,9 @@ export class CommentResolver {
 
   @Query(returns => [CommentModel])
   async comments(
-    @Args('where', { nullable: true }) where: CommentFilterInput = {},
-    @Args('order') order: CommentOrderInput,
     @Args() pag: PaginationArgs,
+    @Args('where', { nullable: true }) where?: CommentFilterInput,
+    @Args('order', { nullable: true }) order?: CommentOrderInput,
   ) {
     return this.commentService.findManyComments({ ...where, ...order, ...pag })
   }
