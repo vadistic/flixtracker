@@ -58,7 +58,7 @@ export const VerifyEmailRequestView: React.FC = () => {
           />
 
           <Anchor onClick={handleNavigateTo('/login')}>Go to login</Anchor>
-          <Anchor onClick={handleNavigateTo('/recover')}>Reset password again</Anchor>
+          <Anchor onClick={handleNavigateTo('/verify')}>Enter verification code</Anchor>
         </FormActions>
       </FormBox>
     </Box>
